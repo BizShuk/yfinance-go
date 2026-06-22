@@ -3,6 +3,7 @@ package yahoo
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -127,6 +128,26 @@ func (c *Client) FetchFundamentalsQuarterly(ctx context.Context, symbol string) 
 	}
 
 	return fundResp, nil
+}
+
+// fetchChartRaw returns the raw bytes of the chart response for a 1-year daily range.
+func (c *Client) fetchChartRaw(ctx context.Context, symbol string) ([]byte, error) {
+	end := time.Now()
+	start := end.AddDate(-1, 0, 0)
+	u, err := c.buildBarsURL(symbol, start, end, true)
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequestWithContext(ctx, "GET", u, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := c.httpClient.Do(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	return io.ReadAll(resp.Body)
 }
 
 // buildBarsURL builds the URL for fetching daily bars
