@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
+	"net/http/cookiejar"
 	"strings"
 	"sync"
 	"time"
@@ -81,6 +82,7 @@ func SessionRotationConfig() *Config {
 type Client struct {
 	config         *Config
 	httpClient     *http.Client
+	jar            *cookiejar.Jar
 	rateLimiter    *RateLimiter
 	circuitBreaker *CircuitBreaker
 	sessionManager *SessionManager
@@ -100,9 +102,13 @@ func NewClient(config *Config) *Client {
 		_ = sessionManager.InitializeSessions()
 	}
 
+	// Create cookie jar for persistent cookie storage (required for Yahoo crumb auth)
+	jar, _ := cookiejar.New(nil)
+
 	// Create HTTP client with timeouts and connection pooling
 	httpClient := &http.Client{
 		Timeout: config.Timeout,
+		Jar:     jar,
 		Transport: &http.Transport{
 			IdleConnTimeout:    config.IdleTimeout,
 			MaxConnsPerHost:    config.MaxConnsPerHost,
@@ -114,6 +120,7 @@ func NewClient(config *Config) *Client {
 	return &Client{
 		config:         config,
 		httpClient:     httpClient,
+		jar:            jar,
 		rateLimiter:    NewRateLimiter(int(config.QPS), config.Burst),
 		circuitBreaker: NewCircuitBreaker(config.CircuitWindow, config.FailureThreshold, config.ResetTimeout),
 		sessionManager: sessionManager,
@@ -474,6 +481,9 @@ func (c *Client) GetSessionStats() map[string]interface{} {
 	stats["session_rotation_enabled"] = true
 	return stats
 }
+
+// Jar returns the cookie jar used by this client.
+func (c *Client) Jar() *cookiejar.Jar { return c.jar }
 
 // extractEndpoint extracts the endpoint name from a URL path
 func extractEndpoint(path string) string {
