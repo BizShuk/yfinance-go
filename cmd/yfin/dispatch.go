@@ -55,7 +55,7 @@ var commandRegistry = map[string]fetchFunc{
 		return fc.Y.FetchCalendar(ctx, s)
 	},
 	"earnings-dates": func(ctx context.Context, fc *FetchContext, s string) (any, error) {
-		return fc.Y.FetchCalendar(ctx, s)
+		return fc.Y.FetchEarningsDates(ctx, s)
 	},
 	"sec-filings": func(ctx context.Context, fc *FetchContext, s string) (any, error) {
 		return fc.Y.FetchSecFilings(ctx, s)
