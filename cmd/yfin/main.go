@@ -379,6 +379,7 @@ func init() {
 	rootCmd.AddCommand(configCmd)
 	rootCmd.AddCommand(soakCmd)
 	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(batchCmd)
 }
 
 func main() {
