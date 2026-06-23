@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -38,7 +39,7 @@ type MIIndexOddRow struct {
 
 // FetchMI_INDEX_ODD retrieves the odd-lot (零股) trading snapshot for
 // `date`.
-func FetchMI_INDEX_ODD(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_INDEX_ODD(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_INDEX_ODD: date is required")
 	}

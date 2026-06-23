@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -32,7 +33,7 @@ type BFIAUUYEARRow struct {
 }
 
 // FetchBFIAUUYEAR retrieves the annual block-trade report for `date` (YYYY0101).
-func FetchBFIAUUYEAR(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchBFIAUUYEAR(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/BFIAUU_YEAR: date is required")
 	}

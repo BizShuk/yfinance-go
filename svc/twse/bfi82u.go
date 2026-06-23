@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -35,7 +36,7 @@ type BFI82URow struct {
 // FetchBFI82U retrieves the daily aggregated buy/sell amounts of the
 // three main institutional investors (自營商, 投信, 外資及陸資) for `date`.
 // TWSE requires `type=day` for this endpoint.
-func FetchBFI82U(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchBFI82U(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/BFI82U: date is required")
 	}

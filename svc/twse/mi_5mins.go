@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -24,17 +25,17 @@ func (r *MI_5MINSResponse) GetStat() string { return r.Response.Stat }
 
 // MI_5MINSRow is a typed representation of one MI_5MINS data row.
 type MI_5MINSRow struct {
-	Time          string // 時間
-	CumBuyOrders  int64  // 累積委買筆數
-	CumBuyLots    int64  // 累積委買張數
-	CumSellOrders int64  // 累積委賣筆數
-	CumSellLots   int64  // 累積委賣張數
-	CumTradeOrders int64 // 累計成交筆數
-	CumTradeLots  int64  // 累計成交張數
+	Time           string // 時間
+	CumBuyOrders   int64  // 累積委買筆數
+	CumBuyLots     int64  // 累積委買張數
+	CumSellOrders  int64  // 累積委賣筆數
+	CumSellLots    int64  // 累積委賣張數
+	CumTradeOrders int64  // 累計成交筆數
+	CumTradeLots   int64  // 累計成交張數
 }
 
 // FetchMI_5MINS retrieves the every-5-seconds order/trade statistics for `date`.
-func FetchMI_5MINS(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_5MINS(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_5MINS: date is required")
 	}

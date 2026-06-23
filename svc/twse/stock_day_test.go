@@ -16,8 +16,8 @@ func TestFetchSTOCK_DAY_Decode(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "個股日成交資訊",
+			"stat":   "OK",
+			"title":  "個股日成交資訊",
 			"fields": []string{"日期", "成交股數", "成交金額", "開盤", "最高", "最低", "收盤", "漲跌價差", "成交筆數"},
 			"data": [][]string{
 				{"20260620", "1,234,567", "12,345,678", "100.00", "101.50", "99.50", "101.00", "+1.00", "5,678"},
@@ -67,7 +67,7 @@ func TestFetchSTOCK_DAY_Decode(t *testing.T) {
 }
 
 func TestFetchSTOCK_DAY_MissingStockNo(t *testing.T) {
-	c := NewHttpxCaller(httpx.NewClient(httpx.DefaultConfig()))
+	c := httpx.NewClient(httpx.DefaultConfig())
 	_, err := FetchSTOCK_DAY(context.Background(), c, "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for missing stockNo, got nil")

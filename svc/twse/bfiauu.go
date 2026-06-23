@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -42,7 +43,7 @@ type BlockBFIAUURow struct {
 
 // FetchBlockBFIAUU retrieves block-trade (鉅額交易) data for `date`.
 // If `stockNo` is set in `opts`, the response is filtered to that symbol.
-func FetchBlockBFIAUU(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchBlockBFIAUU(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/BFIAUU: date is required")
 	}

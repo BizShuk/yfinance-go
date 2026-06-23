@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -36,7 +37,7 @@ type BWIBBUdRow struct {
 // FetchBWIBBU_d retrieves the per-stock P/E, dividend yield, and P/B
 // ratio snapshot for `date`. `opts` may include `selectType=ALL`
 // (TWSE expects this).
-func FetchBWIBBU_d(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchBWIBBU_d(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/BWIBBU_d: date is required")
 	}

@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -38,7 +39,7 @@ type StockDayAvgRow struct {
 
 // FetchStockDayAvg retrieves the per-stock monthly average price for `date`
 // (YYYYMM01). `stockNo` must be supplied via opts.
-func FetchStockDayAvg(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchStockDayAvg(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/STOCK_DAY_AVG: date is required")
 	}

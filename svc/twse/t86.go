@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -24,23 +25,23 @@ func (r *T86Response) GetStat() string { return r.Response.Stat }
 
 // T86Row is a typed representation of one T86 data row.
 type T86Row struct {
-	Code       string // 證券代號
-	Name       string // 證券名稱
-	ForeignBuy  int64 // 外陸資買進股數
-	ForeignSell int64 // 外陸資賣出股數
-	ForeignNet  int64 // 外陸資買賣超股數
-	TrustBuy    int64 // 投信買進股數
-	TrustSell   int64 // 投信賣出股數
-	TrustNet    int64 // 投信買賣超股數
-	DealerBuy   int64 // 自營商買進股數
-	DealerSell  int64 // 自營商賣出股數
-	DealerNet   int64 // 自營商買賣超股數
-	TotalNet    int64 // 三大法人買賣超股數
+	Code        string // 證券代號
+	Name        string // 證券名稱
+	ForeignBuy  int64  // 外陸資買進股數
+	ForeignSell int64  // 外陸資賣出股數
+	ForeignNet  int64  // 外陸資買賣超股數
+	TrustBuy    int64  // 投信買進股數
+	TrustSell   int64  // 投信賣出股數
+	TrustNet    int64  // 投信買賣超股數
+	DealerBuy   int64  // 自營商買進股數
+	DealerSell  int64  // 自營商賣出股數
+	DealerNet   int64  // 自營商買賣超股數
+	TotalNet    int64  // 三大法人買賣超股數
 }
 
 // FetchT86 retrieves the three-institution daily buy/sell for `date`.
 // selectType=ALL is always added by this fetcher.
-func FetchT86(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchT86(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/T86: date is required")
 	}

@@ -33,8 +33,8 @@ func TestFetchFMTQIK_Decode(t *testing.T) {
 		seenURL = r.URL.String()
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "臺股指數及交易量表",
+			"stat":   "OK",
+			"title":  "臺股指數及交易量表",
 			"fields": []string{"日期", "成交股數", "成交金額", "成交筆數", "發行量加權股價指數"},
 			"data": [][]string{
 				{"114/06/20", "8,000,000,000", "300,000,000,000", "2,000,000", "18,000.50"},

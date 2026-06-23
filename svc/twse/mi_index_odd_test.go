@@ -14,8 +14,8 @@ func TestFetchMI_INDEX_ODD_Decode(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "零股交易行情單",
+			"stat":   "OK",
+			"title":  "零股交易行情單",
 			"fields": []string{"證券代號", "證券名稱", "成交股數", "成交金額", "開盤", "最高", "最低", "收盤"},
 			"data": [][]string{
 				{"2330", "台積電", "12,345", "1,234,500", "100.00", "101.00", "99.50", "100.50"},

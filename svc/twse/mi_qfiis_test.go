@@ -20,8 +20,8 @@ func TestFetchMI_QFIIS_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "外資及陸資投資持股統計",
+			"stat":   "OK",
+			"title":  "外資及陸資投資持股統計",
 			"fields": []string{"證券代號", "證券名稱", "持有股數", "佔發行股數%"},
 			"data": [][]string{
 				{"2330", "台積電", "12,345,678,901", "75.55%"},

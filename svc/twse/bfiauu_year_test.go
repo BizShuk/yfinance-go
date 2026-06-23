@@ -33,8 +33,8 @@ func TestFetchBFIAUUYEAR_Decode(t *testing.T) {
 		seenURL = r.URL.String()
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "鉅額交易年成交資訊",
+			"stat":   "OK",
+			"title":  "鉅額交易年成交資訊",
 			"fields": []string{"年度", "成交筆數", "成交股數", "成交金額"},
 			"data": [][]string{
 				{"114", "12,345", "67,890,123", "1,234,567,890,123"},

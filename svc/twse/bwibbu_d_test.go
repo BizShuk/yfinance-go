@@ -14,8 +14,8 @@ func TestFetchBWIBBU_d_Decode(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "個股日本益比、殖利率及股價淨值比",
+			"stat":   "OK",
+			"title":  "個股日本益比、殖利率及股價淨值比",
 			"fields": []string{"證券代號", "證券名稱", "本益比", "殖利率(%)", "股價淨值比"},
 			"data": [][]string{
 				{"2330", "台積電", "22.5", "1.85", "5.6"},

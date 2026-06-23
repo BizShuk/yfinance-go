@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -38,7 +39,7 @@ type MI_MARGNRow struct {
 
 // FetchMI_MARGN retrieves the margin trading balances for `date`.
 // selectType=ALL is always added by this fetcher.
-func FetchMI_MARGN(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_MARGN(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_MARGN: date is required")
 	}

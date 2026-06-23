@@ -33,8 +33,8 @@ func TestFetchBFIMUU_Decode(t *testing.T) {
 		seenURL = r.URL.String()
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "鉅額交易月成交資訊",
+			"stat":   "OK",
+			"title":  "鉅額交易月成交資訊",
 			"fields": []string{"年月", "成交筆數", "成交股數", "成交金額"},
 			"data": [][]string{
 				{"114年06月", "1,234", "5,678,900", "123,456,789,000"},

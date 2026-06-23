@@ -14,8 +14,8 @@ func TestFetchMI_INDEX_PLUS_Decode(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "盤後定價交易",
+			"stat":   "OK",
+			"title":  "盤後定價交易",
 			"fields": []string{"指數", "收盤指數", "漲跌點數", "漲跌百分比"},
 			"data": [][]string{
 				{"發行量加權股價指數", "17,512.45", "+12.33", "+0.07%"},

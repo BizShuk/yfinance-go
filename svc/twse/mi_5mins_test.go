@@ -17,8 +17,8 @@ func TestFetchMI_5MINS_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "每5秒委託成交統計",
+			"stat":   "OK",
+			"title":  "每5秒委託成交統計",
 			"fields": []string{"時間", "累積委買筆數", "累積委買張數", "累積委賣筆數", "累積委賣張數", "累計成交筆數", "累計成交張數"},
 			"data": [][]string{
 				{"13:30:00", "12,345", "67,890", "11,111", "65,432", "9,876", "54,321"},

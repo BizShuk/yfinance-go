@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -26,15 +27,15 @@ func (r *TWT38UResponse) GetStat() string { return r.Response.Stat }
 // TWT38URow is a typed representation of one TWT38U data row.
 // Fields: 單位名稱, 買進股數, 賣出股數, 買賣差額股數.
 type TWT38URow struct {
-	UnitName string  // 單位名稱
-	Buy      int64   // 買進股數
-	Sell     int64   // 賣出股數
-	Net      int64   // 買賣差額股數
+	UnitName string // 單位名稱
+	Buy      int64  // 買進股數
+	Sell     int64  // 賣出股數
+	Net      int64  // 買賣差額股數
 }
 
 // FetchTWT38U retrieves the daily aggregated buy/sell volume of
 // foreign investors (含陸資) for `date`.
-func FetchTWT38U(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchTWT38U(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/TWT38U: date is required")
 	}

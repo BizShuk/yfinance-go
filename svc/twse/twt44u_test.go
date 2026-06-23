@@ -20,8 +20,8 @@ func TestFetchTWT44U_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "自營商買賣超彙總",
+			"stat":   "OK",
+			"title":  "自營商買賣超彙總",
 			"fields": []string{"單位名稱", "買進股數", "賣出股數", "買賣差額股數"},
 			"data": [][]string{
 				{"自營商(自行買賣)", "1,234,567", "987,654", "246,913"},

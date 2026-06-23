@@ -20,8 +20,8 @@ func TestFetchMI_MARGN_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "融資融券餘額",
+			"stat":   "OK",
+			"title":  "融資融券餘額",
 			"fields": []string{"股票代號", "股票名稱", "融資買進", "融資賣出", "融資現償", "融資餘額", "融券買進", "融券賣出", "融券現償", "融券餘額"},
 			"data": [][]string{
 				{"2330", "台積電", "1,000", "2,000", "300", "5,000", "400", "500", "100", "2,000"},

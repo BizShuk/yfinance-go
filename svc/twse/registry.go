@@ -11,10 +11,10 @@ import (
 // Fetcher is the per-endpoint contract: build a query, call FetchJSON, return
 // the typed DTO. Each endpoint file provides its own concrete Fetcher.
 //
-// The transport parameter is the package-level Caller interface, so a
-// Fetcher is decoupled from the concrete *httpx.Client (production uses
-// HttpxCaller; tests can pass a stub).
-type Fetcher func(ctx context.Context, c Caller, baseDate string, opts url.Values) (any, error)
+// The transport parameter is httpx.Caller, so a Fetcher is decoupled from
+// the concrete *httpx.Client (production uses it directly; tests can pass
+// a stub).
+type Fetcher func(ctx context.Context, c httpx.Caller, baseDate string, opts url.Values) (any, error)
 
 // Endpoint describes a TWSE endpoint for CLI help/dispatch.
 type Endpoint struct {
@@ -61,5 +61,6 @@ var Registry = map[string]Endpoint{
 func DefaultClient() *httpx.Client {
 	cfg := httpx.DefaultConfig()
 	cfg.Timeout = 30 * time.Second
+	cfg.BaseURL = BaseURL
 	return httpx.NewClient(cfg)
 }

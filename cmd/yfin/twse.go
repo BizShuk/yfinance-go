@@ -45,7 +45,7 @@ Examples:
 // twseFetcher is the uniform function signature used by nameToFetcher.
 // All entries in twseNameToFetcher satisfy this contract: `date` is the
 // primary date/period key, `opts` carries extra params (e.g. stockNo).
-type twseFetcher func(ctx context.Context, c twse.Caller, date string, opts url.Values) (any, error)
+type twseFetcher func(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error)
 
 // twseNameToFetcher maps an endpoint name (Registry key) to its fetcher.
 // For endpoints with a special 2nd positional argument (e.g. FMSRFK needs
@@ -73,7 +73,7 @@ var twseNameToFetcher = map[string]twseFetcher{
 	"STOCK_DAY_AVG": twse.FetchStockDayAvg,
 	// FMSRFK has the signature FetchFMSRFK(ctx, c, stockNo, date, opts);
 	// wrap it so the adapter sees a uniform (date, opts) shape.
-	"FMSRFK": func(ctx context.Context, c twse.Caller, date string, opts url.Values) (any, error) {
+	"FMSRFK": func(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 		stockNo := opts.Get("stockNo")
 		if stockNo == "" {
 			return nil, fmt.Errorf("FMSRFK: --stock is required")
@@ -130,13 +130,15 @@ func runTwseEndpoint(cmd *cobra.Command, args []string) error {
 		opts.Set("month", twseCfg.month)
 	}
 
-	// Build a TWSE-tuned httpx client (timeout 30s, modest QPS) and wrap it
-	// in a HttpxCaller so it satisfies the twse.Caller interface used by
-	// every per-endpoint Fetch* function.
+	// Build a TWSE-tuned httpx client (timeout 30s, modest QPS). The client
+	// itself implements httpx.Caller, so every per-endpoint Fetch* function
+	// can accept it directly. Config.BaseURL must be the TWSE endpoint so
+	// that *httpx.Client.Call resolves paths against the right host.
 	cfg := httpx.DefaultConfig()
 	cfg.Timeout = twseCfg.timeout
 	cfg.MaxAttempts = 1
-	caller := twse.NewHttpxCaller(httpx.NewClient(cfg))
+	cfg.BaseURL = twse.BaseURL
+	caller := httpx.NewClient(cfg)
 
 	ctx, cancel := context.WithTimeout(context.Background(), twseCfg.timeout+5*time.Second)
 	defer cancel()

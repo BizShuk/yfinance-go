@@ -50,8 +50,8 @@ func TestFetchStockDayAvg_Decode(t *testing.T) {
 		seenURL = r.URL.String()
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "個股月均價",
+			"stat":   "OK",
+			"title":  "個股月均價",
 			"fields": []string{"年度", "月份", "最高", "最低", "加權平均價", "成交筆數", "成交股數", "成交金額"},
 			"data": [][]string{
 				{"114", "06", "1,000", "950", "975.50", "500,000", "100,000,000", "97,550,000,000"},

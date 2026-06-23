@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -34,7 +35,7 @@ type BFIAMURow struct {
 
 // FetchBFIAMU retrieves per-day index close & change values for `date`.
 // `date` is required (YYYYMMDD).
-func FetchBFIAMU(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchBFIAMU(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/BFIAMU: date is required")
 	}

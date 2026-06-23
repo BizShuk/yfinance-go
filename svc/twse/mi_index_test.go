@@ -12,10 +12,10 @@ import (
 	"github.com/AmpyFin/yfinance-go/internal/httpx"
 )
 
-// newTestClient returns a Caller backed by an httpx client wired to the
-// httptest server. It also overrides BaseURL so FetchJSON's internal
+// newTestClient returns an httpx.Caller backed by an httpx client wired to
+// the httptest server. It also overrides BaseURL so FetchJSON's internal
 // logic and the Caller's URL builder both point at the test server.
-func newTestClient(t *testing.T, srv *httptest.Server) Caller {
+func newTestClient(t *testing.T, srv *httptest.Server) httpx.Caller {
 	t.Helper()
 	cfg := httpx.DefaultConfig()
 	cfg.Timeout = 5_000_000_000 // 5s in ns
@@ -25,15 +25,15 @@ func newTestClient(t *testing.T, srv *httptest.Server) Caller {
 	old := BaseURL
 	BaseURL = srv.URL
 	t.Cleanup(func() { BaseURL = old })
-	return NewHttpxCaller(c)
+	return c
 }
 
 func TestFetchMI_INDEX_Decode(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "每日收盤行情",
+			"stat":   "OK",
+			"title":  "每日收盤行情",
 			"fields": []string{"指數", "收盤指數", "漲跌點數", "漲跌百分比"},
 			"data": [][]string{
 				{"發行量加權股價指數", "17,500.12", "+120.34", "+0.69%"},

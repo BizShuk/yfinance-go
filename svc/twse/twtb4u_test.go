@@ -20,8 +20,8 @@ func TestFetchTWTB4U_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "當日沖銷交易標的",
+			"stat":   "OK",
+			"title":  "當日沖銷交易標的",
 			"fields": []string{"證券代號", "證券名稱", "當日沖銷交易成交股數", "當日沖銷交易成交金額", "當日沖銷交易買進成交金額", "當日沖銷交易賣出成交金額"},
 			"data": [][]string{
 				{"2330", "台積電", "12,345,678", "98,765,432", "49,000,000", "49,765,432"},

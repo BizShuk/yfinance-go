@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -34,7 +35,7 @@ type TWT44URow struct {
 
 // FetchTWT44U retrieves the daily aggregated buy/sell volume of
 // dealers (自營商) for `date`.
-func FetchTWT44U(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchTWT44U(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/TWT44U: date is required")
 	}

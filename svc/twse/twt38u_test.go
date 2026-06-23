@@ -23,8 +23,8 @@ func TestFetchTWT38U_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "外資陸資買賣超彙總",
+			"stat":   "OK",
+			"title":  "外資陸資買賣超彙總",
 			"fields": []string{"單位名稱", "買進股數", "賣出股數", "買賣差額股數"},
 			"data": [][]string{
 				{"外資及陸資", "1,234,567,890", "987,654,321", "246,913,569"},

@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -26,15 +27,15 @@ func (r *MI_WEEKResponse) GetStat() string { return r.Response.Stat }
 // MIWeekRow is a typed representation of one MI_WEEK data row.
 // Columns: 股票代號, 股票名稱, 發行股數, 市值.
 type MIWeekRow struct {
-	StockCode   string // 股票代號
-	StockName   string // 股票名稱
+	StockCode    string // 股票代號
+	StockName    string // 股票名稱
 	SharesIssued int64  // 發行股數
-	MarketCap   int64  // 市值
+	MarketCap    int64  // 市值
 }
 
 // FetchMI_WEEK retrieves the weekly stock market-cap report for `date`.
 // `date` is required (YYYYMMDD).
-func FetchMI_WEEK(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_WEEK(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_WEEK: date is required")
 	}

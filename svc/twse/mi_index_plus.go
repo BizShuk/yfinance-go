@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -34,7 +35,7 @@ type MIIndexPlusRow struct {
 
 // FetchMI_INDEX_PLUS retrieves the after-hours (盤後定價) index data
 // for `date`.
-func FetchMI_INDEX_PLUS(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_INDEX_PLUS(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_INDEX_PLUS: date is required")
 	}

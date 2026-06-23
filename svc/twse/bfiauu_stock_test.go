@@ -33,8 +33,8 @@ func TestFetchBFIAUUSTOCK_Decode(t *testing.T) {
 		seenURL = r.URL.String()
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "單一證券鉅額交易",
+			"stat":   "OK",
+			"title":  "單一證券鉅額交易",
 			"fields": []string{"序號", "證券代號", "證券名稱", "買進證券商", "賣出證券商", "成交數量", "成交金額", "成交價格", "成交時間", "買進成交價"},
 			"data": [][]string{
 				{"1", "2330", "台積電", "元大", "凱基", "100,000", "60,000,000", "600.00", "13:30:00", "599.50"},

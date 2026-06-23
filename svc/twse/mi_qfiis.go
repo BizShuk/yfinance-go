@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -24,15 +25,15 @@ func (r *MI_QFIISResponse) GetStat() string { return r.Response.Stat }
 
 // MI_QFIISRow is a typed representation of one MI_QFIIS data row.
 type MI_QFIISRow struct {
-	Code      string  // 證券代號
-	Name      string  // 證券名稱
-	SharesHeld int64  // 持有股數
+	Code       string  // 證券代號
+	Name       string  // 證券名稱
+	SharesHeld int64   // 持有股數
 	IssuePct   float64 // 佔發行股數%
 }
 
 // FetchMI_QFIIS retrieves the foreign+mainland investor holdings for `date`.
 // selectType=ALL is always added by this fetcher.
-func FetchMI_QFIIS(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_QFIIS(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_QFIIS: date is required")
 	}

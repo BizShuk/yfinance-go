@@ -9,6 +9,7 @@ package twse
 import (
 	"context"
 	"fmt"
+	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -34,7 +35,7 @@ type MIIndexRow struct {
 
 // FetchMI_INDEX retrieves the daily market index close for `date`.
 // `opts` may include a `type=ALL` parameter (TWSE expects this).
-func FetchMI_INDEX(ctx context.Context, c Caller, date string, opts url.Values) (any, error) {
+func FetchMI_INDEX(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_INDEX: date is required")
 	}

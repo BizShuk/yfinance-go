@@ -27,8 +27,8 @@ func TestFetchBFI82U_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "三大法人買賣金額",
+			"stat":   "OK",
+			"title":  "三大法人買賣金額",
 			"fields": []string{"單位名稱", "買進金額", "賣出金額", "買賣差額"},
 			"data": [][]string{
 				{"自營商(自行買賣)", "1,234,567,890", "987,654,321", "246,913,569"},

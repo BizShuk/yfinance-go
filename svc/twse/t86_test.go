@@ -20,8 +20,8 @@ func TestFetchT86_Decode(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"stat":  "OK",
-			"title": "三大法人買賣超日報",
+			"stat":   "OK",
+			"title":  "三大法人買賣超日報",
 			"fields": []string{"證券代號", "證券名稱", "外陸資買進股數", "外陸資賣出股數", "外陸資買賣超股數", "投信買進股數", "投信賣出股數", "投信買賣超股數", "自營商買進股數", "自營商賣出股數", "自營商買賣超股數", "三大法人買賣超股數"},
 			"data": [][]string{
 				{"2330", "台積電", "100,000", "50,000", "+50,000", "20,000", "10,000", "+10,000", "5,000", "3,000", "+2,000", "+62,000"},
