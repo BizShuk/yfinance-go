@@ -3,12 +3,14 @@
 // ErrNoData sentinel error。
 //
 // 設計重點:
-//   - 傳輸層契約為 httpx.Caller (見 internal/httpx/caller.go);
-//     *httpx.Client 直接實作,測試可換成 stub。
+//   - 本套件擁有完整 URL:BaseURL (TWSE host) 由本檔持有,FetchJSON 與
+//     各端點的 path 在同一層組裝,host 與 path 不再分屬兩層。
+//   - 傳輸層不經參數注入:FetchJSON 直接向 internal/config 拉取整個程式
+//     共用的 *http.Client (host-agnostic,僅帶 timeout)。
 //   - FetchJSON 統一處理 URL 組裝、response=json 附加、JSON 解碼與
 //     「沒有符合條件的資料」stat 字串偵測。
 //   - 各端點檔 (mi_index.go、t86.go ...) 實作各自的 FetchXxx 函式,
-//     全部以 httpx.Caller 為唯一外部相依。
+//     只負責組 query 與呼叫 FetchJSON。
 package twse
 
 import (
@@ -16,29 +18,31 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
+	"github.com/AmpyFin/yfinance-go/internal/config"
 )
 
 // BaseURL is the TWSE RESTful endpoint root. It is a `var` (not const) so
-// tests can override it via httptest.
+// tests can override it via httptest. It is the single owner of the TWSE
+// host: FetchJSON joins it with each endpoint's path to form the full URL.
 var BaseURL = "https://www.twse.com.tw/rwd/zh"
 
 const (
 	// StatOK is the value of `stat` field when TWSE returned data successfully.
 	StatOK = "OK"
+
+	// userAgent is sent on every request; TWSE rejects the default Go UA.
+	userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 )
 
 // ErrNoData is returned when TWSE responds with "沒有符合條件的資料" (or any
 // variant that contains the substring statNoData). It is a sentinel so callers
 // can errors.Is it.
 var ErrNoData = errors.New("twse: no data for requested date")
-
-// DefaultTimeout is the per-request timeout suggested by TWSE engineering notes.
-const DefaultTimeout = 30 * time.Second
 
 // FetchJSON performs a GET on `BaseURL + path` with the supplied query
 // params, then decodes the body into T. It automatically:
@@ -48,14 +52,17 @@ const DefaultTimeout = 30 * time.Second
 //     contains the "no data" substring.
 //
 // `path` is the endpoint path (e.g. "/afterTrading/MI_INDEX"), appended
-// to BaseURL. `query` is optional (nil OK); caller-supplied keys are
-// preserved and `response=json` is always added on top.
+// to BaseURL — this package owns the full URL. The HTTP transport is the
+// process-wide shared client pulled from internal/config (no per-call
+// injection): a single host-agnostic *http.Client serves every endpoint.
+// `query` is optional (nil OK); caller-supplied keys are preserved and
+// `response=json` is always added on top.
 //
 // T must either be (or embed) *Response, or implement GetStat() string.
 // Concrete DTOs typically embed `Response` and gain GetStat() via
 // promotion; if the embedded name is shadowed, the DTO should provide
 // its own GetStat() method.
-func FetchJSON[T any](ctx context.Context, c httpx.Caller, path string, query url.Values) (T, error) {
+func FetchJSON[T any](ctx context.Context, path string, query url.Values) (T, error) {
 	var zero T
 	q := url.Values{}
 	for k, vs := range query {
@@ -65,9 +72,31 @@ func FetchJSON[T any](ctx context.Context, c httpx.Caller, path string, query ur
 	}
 	q.Set("response", "json")
 
-	body, err := c.Call(ctx, path, q)
+	u, err := url.Parse(BaseURL + path)
+	if err != nil {
+		return zero, fmt.Errorf("twse: invalid path %q: %w", path, err)
+	}
+	u.RawQuery = q.Encode()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+	if err != nil {
+		return zero, err
+	}
+	req.Header.Set("User-Agent", userAgent)
+
+	resp, err := config.HTTPClient().Do(req)
 	if err != nil {
 		return zero, fmt.Errorf("twse: request failed: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode/100 != 2 {
+		b, _ := io.ReadAll(io.LimitReader(resp.Body, 1024))
+		return zero, fmt.Errorf("twse: unexpected status %d: %s", resp.StatusCode, string(b))
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return zero, fmt.Errorf("twse: read body: %w", err)
 	}
 	if len(body) == 0 {
 		return zero, ErrNoData

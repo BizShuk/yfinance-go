@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -33,7 +32,7 @@ type BFIMUURow struct {
 }
 
 // FetchBFIMUU retrieves the monthly block-trade report for `date` (YYYYMM01).
-func FetchBFIMUU(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchBFIMUU(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/BFIMUU: date is required")
 	}
@@ -44,7 +43,7 @@ func FetchBFIMUU(ctx context.Context, c httpx.Caller, date string, opts url.Valu
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[BFIMUResponse](ctx, c, "/block/BFIMUU", q)
+	return FetchJSON[BFIMUResponse](ctx, "/block/BFIMUU", q)
 }
 
 // ParseBFIMUURow converts one raw `data` row into a typed BFIMUURow.

@@ -3,18 +3,15 @@ package twse
 import (
 	"context"
 	"net/url"
-	"time"
-
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 )
 
 // Fetcher is the per-endpoint contract: build a query, call FetchJSON, return
 // the typed DTO. Each endpoint file provides its own concrete Fetcher.
 //
-// The transport parameter is httpx.Caller, so a Fetcher is decoupled from
-// the concrete *httpx.Client (production uses it directly; tests can pass
-// a stub).
-type Fetcher func(ctx context.Context, c httpx.Caller, baseDate string, opts url.Values) (any, error)
+// The transport is not injected: FetchJSON pulls the process-wide shared HTTP
+// client from internal/config, so a Fetcher takes only the date/period key
+// and extra opts.
+type Fetcher func(ctx context.Context, baseDate string, opts url.Values) (any, error)
 
 // Endpoint describes a TWSE endpoint for CLI help/dispatch.
 type Endpoint struct {
@@ -55,12 +52,4 @@ var Registry = map[string]Endpoint{
 	"FMSRFK":        {Name: "FMSRFK", Board: "statistics", Path: "/exchangeReport/FMSRFK", Description: "個股月成交資訊", NeedsStock: true},
 	"BFIAMU":        {Name: "BFIAMU", Board: "statistics", Path: "/afterTrading/BFIAMU", Description: "每日各類指數成交量值"},
 	"MI_WEEK":       {Name: "MI_WEEK", Board: "statistics", Path: "/statistics/MI_WEEK", Description: "股票市值週報"},
-}
-
-// DefaultClient returns an httpx client configured for TWSE (timeout 30s, modest QPS).
-func DefaultClient() *httpx.Client {
-	cfg := httpx.DefaultConfig()
-	cfg.Timeout = 30 * time.Second
-	cfg.BaseURL = BaseURL
-	return httpx.NewClient(cfg)
 }

@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -34,7 +33,7 @@ type TWTB4URow struct {
 }
 
 // FetchTWTB4U retrieves the daily day-trade targets and statistics for `date`.
-func FetchTWTB4U(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchTWTB4U(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/TWTB4U: date is required")
 	}
@@ -45,7 +44,7 @@ func FetchTWTB4U(ctx context.Context, c httpx.Caller, date string, opts url.Valu
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[TWTB4UResponse](ctx, c, "/afterTrading/TWTB4U", q)
+	return FetchJSON[TWTB4UResponse](ctx, "/afterTrading/TWTB4U", q)
 }
 
 // ParseTWTB4URow converts one raw `data` row into a typed TWTB4URow.

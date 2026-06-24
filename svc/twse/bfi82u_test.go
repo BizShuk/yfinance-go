@@ -40,8 +40,8 @@ func TestFetchBFI82U_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	raw, err := FetchBFI82U(context.Background(), c, "20260620", nil)
+	newTestClient(t, srv)
+	raw, err := FetchBFI82U(context.Background(), "20260620", nil)
 	if err != nil {
 		t.Fatalf("FetchBFI82U returned error: %v", err)
 	}
@@ -83,8 +83,8 @@ func TestFetchBFI82U_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchBFI82U(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchBFI82U(context.Background(), "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}

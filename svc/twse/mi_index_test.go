@@ -8,24 +8,17 @@ import (
 	"net/url"
 	"strings"
 	"testing"
-
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 )
 
-// newTestClient returns an httpx.Caller backed by an httpx client wired to
-// the httptest server. It also overrides BaseURL so FetchJSON's internal
-// logic and the Caller's URL builder both point at the test server.
-func newTestClient(t *testing.T, srv *httptest.Server) httpx.Caller {
+// newTestClient points the package BaseURL at the httptest server so FetchJSON
+// resolves paths against it, and restores it on cleanup. No client is injected:
+// FetchJSON pulls the shared, host-agnostic stdlib client from internal/config,
+// which happily reaches the test server once BaseURL is overridden.
+func newTestClient(t *testing.T, srv *httptest.Server) {
 	t.Helper()
-	cfg := httpx.DefaultConfig()
-	cfg.Timeout = 5_000_000_000 // 5s in ns
-	cfg.MaxAttempts = 1
-	cfg.BaseURL = srv.URL
-	c := httpx.NewClient(cfg)
 	old := BaseURL
 	BaseURL = srv.URL
 	t.Cleanup(func() { BaseURL = old })
-	return c
 }
 
 func TestFetchMI_INDEX_Decode(t *testing.T) {
@@ -43,10 +36,10 @@ func TestFetchMI_INDEX_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
+	newTestClient(t, srv)
 	opts := url.Values{}
 	opts.Set("type", "ALL")
-	raw, err := FetchMI_INDEX(context.Background(), c, "20260620", opts)
+	raw, err := FetchMI_INDEX(context.Background(), "20260620", opts)
 	if err != nil {
 		t.Fatalf("FetchMI_INDEX returned error: %v", err)
 	}
@@ -85,8 +78,8 @@ func TestFetchMI_INDEX_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchMI_INDEX(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchMI_INDEX(context.Background(), "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}

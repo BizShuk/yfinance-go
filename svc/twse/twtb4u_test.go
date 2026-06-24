@@ -31,8 +31,8 @@ func TestFetchTWTB4U_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	raw, err := FetchTWTB4U(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	raw, err := FetchTWTB4U(context.Background(), "20260620", url.Values{})
 	if err != nil {
 		t.Fatalf("FetchTWTB4U returned error: %v", err)
 	}
@@ -80,8 +80,8 @@ func TestFetchTWTB4U_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchTWTB4U(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchTWTB4U(context.Background(), "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}
@@ -93,8 +93,8 @@ func TestFetchTWTB4U_NoData(t *testing.T) {
 func TestFetchTWTB4U_EmptyDate(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {}))
 	defer srv.Close()
-	c := newTestClient(t, srv)
-	_, err := FetchTWTB4U(context.Background(), c, "", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchTWTB4U(context.Background(), "", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for empty date, got nil")
 	}

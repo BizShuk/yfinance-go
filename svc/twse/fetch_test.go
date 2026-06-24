@@ -7,23 +7,17 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"github.com/stretchr/testify/require"
 )
 
-// newTestHttpxClient returns an *httpx.Client whose Config.BaseURL points
-// at the httptest server, so the client's Call method resolves the path
-// correctly. It also overrides BaseURL so FetchJSON's internal URL path
-// matches the test server.
-func newTestHttpxClient(t *testing.T, srv *httptest.Server) *httpx.Client {
+// newTestHttpxClient points the package BaseURL at the httptest server so
+// FetchJSON resolves the path against it, restoring it on cleanup. No client
+// is injected: FetchJSON uses the shared stdlib client from internal/config.
+func newTestHttpxClient(t *testing.T, srv *httptest.Server) {
 	t.Helper()
-	cfg := httpx.DefaultConfig()
-	cfg.MaxAttempts = 1
-	cfg.BaseURL = srv.URL
 	old := BaseURL
 	BaseURL = srv.URL
 	t.Cleanup(func() { BaseURL = old })
-	return httpx.NewClient(cfg)
 }
 
 func TestFetchJSON_Decodes(t *testing.T) {
@@ -33,8 +27,8 @@ func TestFetchJSON_Decodes(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestHttpxClient(t, srv)
-	got, err := FetchJSON[TestResponse](context.Background(), c, "/test/endpoint", nil)
+	newTestHttpxClient(t, srv)
+	got, err := FetchJSON[TestResponse](context.Background(), "/test/endpoint", nil)
 	require.NoError(t, err)
 	require.Equal(t, "OK", got.Stat)
 	require.Equal(t, "MI_INDEX", got.Title)
@@ -47,8 +41,8 @@ func TestFetchJSON_NoDataReturnsErrNoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestHttpxClient(t, srv)
-	_, err := FetchJSON[TestResponse](context.Background(), c, "/test/endpoint", nil)
+	newTestHttpxClient(t, srv)
+	_, err := FetchJSON[TestResponse](context.Background(), "/test/endpoint", nil)
 	require.Error(t, err)
 	require.True(t, errors.Is(err, ErrNoData))
 }
@@ -59,8 +53,8 @@ func TestFetchJSON_StatAtTopLevel(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestHttpxClient(t, srv)
-	got, err := FetchJSON[TestResponse](context.Background(), c, "/test/endpoint", nil)
+	newTestHttpxClient(t, srv)
+	got, err := FetchJSON[TestResponse](context.Background(), "/test/endpoint", nil)
 	require.NoError(t, err)
 	require.Equal(t, "OK", got.Stat)
 }
@@ -78,8 +72,8 @@ func TestFetchJSON_EmbeddedStructReportsStat(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestHttpxClient(t, srv)
-	got, err := FetchJSON[EmbeddedResponse](context.Background(), c, "/test/endpoint", nil)
+	newTestHttpxClient(t, srv)
+	got, err := FetchJSON[EmbeddedResponse](context.Background(), "/test/endpoint", nil)
 	require.NoError(t, err)
 	require.Equal(t, "OK", got.GetStat())
 	require.Equal(t, "20221230", got.Date)

@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -35,7 +34,7 @@ type TWT38URow struct {
 
 // FetchTWT38U retrieves the daily aggregated buy/sell volume of
 // foreign investors (含陸資) for `date`.
-func FetchTWT38U(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchTWT38U(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/TWT38U: date is required")
 	}
@@ -46,7 +45,7 @@ func FetchTWT38U(ctx context.Context, c httpx.Caller, date string, opts url.Valu
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[TWT38UResponse](ctx, c, "/fund/TWT38U", q)
+	return FetchJSON[TWT38UResponse](ctx, "/fund/TWT38U", q)
 }
 
 // ParseTWT38URow converts one raw `data` row into a typed TWT38URow.

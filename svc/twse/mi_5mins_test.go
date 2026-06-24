@@ -28,8 +28,8 @@ func TestFetchMI_5MINS_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	raw, err := FetchMI_5MINS(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	raw, err := FetchMI_5MINS(context.Background(), "20260620", url.Values{})
 	if err != nil {
 		t.Fatalf("FetchMI_5MINS returned error: %v", err)
 	}
@@ -77,8 +77,8 @@ func TestFetchMI_5MINS_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchMI_5MINS(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchMI_5MINS(context.Background(), "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}

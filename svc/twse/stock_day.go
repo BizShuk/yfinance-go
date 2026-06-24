@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -41,7 +40,7 @@ type StockDayRow struct {
 
 // FetchSTOCK_DAY retrieves per-stock daily trade info for `date` and
 // `stockNo` (must be supplied via opts).
-func FetchSTOCK_DAY(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchSTOCK_DAY(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/STOCK_DAY: date is required")
 	}
@@ -60,7 +59,7 @@ func FetchSTOCK_DAY(ctx context.Context, c httpx.Caller, date string, opts url.V
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[STOCK_DAYResponse](ctx, c, "/afterTrading/STOCK_DAY", q)
+	return FetchJSON[STOCK_DAYResponse](ctx, "/afterTrading/STOCK_DAY", q)
 }
 
 // ParseStockDayRow converts one raw `data` row into a typed StockDayRow.

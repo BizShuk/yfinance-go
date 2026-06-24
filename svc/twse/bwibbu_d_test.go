@@ -25,8 +25,8 @@ func TestFetchBWIBBU_d_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	raw, err := FetchBWIBBU_d(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	raw, err := FetchBWIBBU_d(context.Background(), "20260620", url.Values{})
 	if err != nil {
 		t.Fatalf("FetchBWIBBU_d returned error: %v", err)
 	}
@@ -68,8 +68,8 @@ func TestFetchBWIBBU_d_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchBWIBBU_d(context.Background(), c, "20260620", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchBWIBBU_d(context.Background(), "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}

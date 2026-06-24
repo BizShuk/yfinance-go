@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -41,7 +40,7 @@ type T86Row struct {
 
 // FetchT86 retrieves the three-institution daily buy/sell for `date`.
 // selectType=ALL is always added by this fetcher.
-func FetchT86(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchT86(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/T86: date is required")
 	}
@@ -53,7 +52,7 @@ func FetchT86(ctx context.Context, c httpx.Caller, date string, opts url.Values)
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[T86Response](ctx, c, "/fund/T86", q)
+	return FetchJSON[T86Response](ctx, "/fund/T86", q)
 }
 
 // ParseT86Row converts one raw `data` row into a typed T86Row.

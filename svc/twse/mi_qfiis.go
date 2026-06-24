@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -33,7 +32,7 @@ type MI_QFIISRow struct {
 
 // FetchMI_QFIIS retrieves the foreign+mainland investor holdings for `date`.
 // selectType=ALL is always added by this fetcher.
-func FetchMI_QFIIS(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchMI_QFIIS(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/MI_QFIIS: date is required")
 	}
@@ -45,7 +44,7 @@ func FetchMI_QFIIS(ctx context.Context, c httpx.Caller, date string, opts url.Va
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[MI_QFIISResponse](ctx, c, "/fund/MI_QFIIS", q)
+	return FetchJSON[MI_QFIISResponse](ctx, "/fund/MI_QFIIS", q)
 }
 
 // ParseMI_QFIISRow converts one raw `data` row into a typed MI_QFIISRow.

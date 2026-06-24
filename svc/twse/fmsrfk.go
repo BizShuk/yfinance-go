@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 	"strings"
 )
@@ -40,7 +39,7 @@ type FMSRFKRow struct {
 
 // FetchFMSRFK retrieves per-stock monthly trading info for the year `date`.
 // `stockNo` is required (e.g. "2330"); `date` is the year (e.g. "2022").
-func FetchFMSRFK(ctx context.Context, c httpx.Caller, stockNo, date string, opts url.Values) (any, error) {
+func FetchFMSRFK(ctx context.Context, stockNo, date string, opts url.Values) (any, error) {
 	if stockNo == "" {
 		return nil, fmt.Errorf("twse/FMSRFK: stockNo is required")
 	}
@@ -55,7 +54,7 @@ func FetchFMSRFK(ctx context.Context, c httpx.Caller, stockNo, date string, opts
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[FMSRFKResponse](ctx, c, "/exchangeReport/FMSRFK", q)
+	return FetchJSON[FMSRFKResponse](ctx, "/exchangeReport/FMSRFK", q)
 }
 
 // ParseFMSRFKRow converts one raw `data` row into a typed FMSRFKRow.

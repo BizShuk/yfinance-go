@@ -8,8 +8,6 @@ import (
 	"net/url"
 	"strings"
 	"testing"
-
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 )
 
 func TestFetchSTOCK_DAY_Decode(t *testing.T) {
@@ -28,10 +26,10 @@ func TestFetchSTOCK_DAY_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
+	newTestClient(t, srv)
 	opts := url.Values{}
 	opts.Set("stockNo", "2330")
-	raw, err := FetchSTOCK_DAY(context.Background(), c, "20260620", opts)
+	raw, err := FetchSTOCK_DAY(context.Background(), "20260620", opts)
 	if err != nil {
 		t.Fatalf("FetchSTOCK_DAY returned error: %v", err)
 	}
@@ -67,8 +65,7 @@ func TestFetchSTOCK_DAY_Decode(t *testing.T) {
 }
 
 func TestFetchSTOCK_DAY_MissingStockNo(t *testing.T) {
-	c := httpx.NewClient(httpx.DefaultConfig())
-	_, err := FetchSTOCK_DAY(context.Background(), c, "20260620", url.Values{})
+	_, err := FetchSTOCK_DAY(context.Background(), "20260620", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for missing stockNo, got nil")
 	}
@@ -84,10 +81,10 @@ func TestFetchSTOCK_DAY_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
+	newTestClient(t, srv)
 	opts := url.Values{}
 	opts.Set("stockNo", "2330")
-	_, err := FetchSTOCK_DAY(context.Background(), c, "20260620", opts)
+	_, err := FetchSTOCK_DAY(context.Background(), "20260620", opts)
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}

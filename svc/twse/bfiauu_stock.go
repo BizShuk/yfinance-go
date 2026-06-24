@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -18,11 +17,11 @@ import (
 // parameter is validated. (After consolidating bfiauu_block.go into
 // bfiauu.go, the BFIAUU endpoint uses the full 10-column block-trade
 // shape, so BFIAUU_STOCK and BFIAUU share the same row parser.)
-func FetchBFIAUUSTOCK(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchBFIAUUSTOCK(ctx context.Context, date string, opts url.Values) (any, error) {
 	if opts.Get("stockNo") == "" {
 		return nil, fmt.Errorf("twse/BFIAUU_STOCK: stockNo is required")
 	}
-	return FetchBlockBFIAUU(ctx, c, date, opts)
+	return FetchBlockBFIAUU(ctx, date, opts)
 }
 
 // ParseBFIAUUSTOCKRow parses a row from the BFIAUU_STOCK endpoint. The

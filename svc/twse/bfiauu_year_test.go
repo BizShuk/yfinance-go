@@ -17,8 +17,8 @@ func TestFetchBFIAUUYEAR_RequiresDate(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchBFIAUUYEAR(context.Background(), c, "", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchBFIAUUYEAR(context.Background(), "", url.Values{})
 	if err == nil {
 		t.Fatal("expected error when date is missing, got nil")
 	}
@@ -44,8 +44,8 @@ func TestFetchBFIAUUYEAR_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	raw, err := FetchBFIAUUYEAR(context.Background(), c, "20250101", url.Values{})
+	newTestClient(t, srv)
+	raw, err := FetchBFIAUUYEAR(context.Background(), "20250101", url.Values{})
 	if err != nil {
 		t.Fatalf("FetchBFIAUUYEAR returned error: %v", err)
 	}

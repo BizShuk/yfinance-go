@@ -9,7 +9,6 @@ package twse
 import (
 	"context"
 	"fmt"
-	"github.com/AmpyFin/yfinance-go/internal/httpx"
 	"net/url"
 )
 
@@ -35,7 +34,7 @@ type FMTQIKRow struct {
 
 // FetchFMTQIK retrieves the TAIEX index and trading volume for `date`.
 // `date` should be YYYYMMDD (month-start or month-end).
-func FetchFMTQIK(ctx context.Context, c httpx.Caller, date string, opts url.Values) (any, error) {
+func FetchFMTQIK(ctx context.Context, date string, opts url.Values) (any, error) {
 	if date == "" {
 		return nil, fmt.Errorf("twse/FMTQIK: date is required")
 	}
@@ -46,7 +45,7 @@ func FetchFMTQIK(ctx context.Context, c httpx.Caller, date string, opts url.Valu
 			q.Add(k, v)
 		}
 	}
-	return FetchJSON[FMTQIKResponse](ctx, c, "/exchangeReport/FMTQIK", q)
+	return FetchJSON[FMTQIKResponse](ctx, "/exchangeReport/FMTQIK", q)
 }
 
 // ParseFMTQIKRow converts one raw `data` row into a typed FMTQIKRow.

@@ -35,8 +35,8 @@ func TestFetchBFIAMU_Decode(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	raw, err := FetchBFIAMU(context.Background(), c, "20221230", url.Values{})
+	newTestClient(t, srv)
+	raw, err := FetchBFIAMU(context.Background(), "20221230", url.Values{})
 	if err != nil {
 		t.Fatalf("FetchBFIAMU returned error: %v", err)
 	}
@@ -87,8 +87,8 @@ func TestFetchBFIAMU_NoData(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	c := newTestClient(t, srv)
-	_, err := FetchBFIAMU(context.Background(), c, "19000101", url.Values{})
+	newTestClient(t, srv)
+	_, err := FetchBFIAMU(context.Background(), "19000101", url.Values{})
 	if err == nil {
 		t.Fatal("expected error for no-data response, got nil")
 	}
