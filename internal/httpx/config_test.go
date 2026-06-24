@@ -83,8 +83,6 @@ func TestConfigFields(t *testing.T) {
 		FailureThreshold:      3,
 		ResetTimeout:          30 * time.Second,
 		UserAgent:             "test-agent",
-		EnableSessionRotation: false,
-		NumSessions:           1,
 	}
 
 	// Basic validation that fields are set

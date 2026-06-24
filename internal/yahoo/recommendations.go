@@ -1,3 +1,5 @@
+// Fetches and decodes Yahoo recommendation-trend data.
+
 package yahoo
 
 import (

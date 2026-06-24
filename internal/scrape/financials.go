@@ -1,3 +1,5 @@
+// Financials scraping DTOs plus regex config and parsing.
+
 package scrape
 
 import (

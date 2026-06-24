@@ -1,3 +1,5 @@
+// Helpers to classify data-source strings (scraped vs API).
+
 package emit
 
 import (

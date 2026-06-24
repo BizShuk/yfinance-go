@@ -1,3 +1,5 @@
+// ChunkingStrategy splits oversized payloads into size-bounded chunks for the bus.
+
 package bus
 
 import (

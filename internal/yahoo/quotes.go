@@ -1,3 +1,5 @@
+// Decodes Yahoo quote responses.
+
 package yahoo
 
 import (

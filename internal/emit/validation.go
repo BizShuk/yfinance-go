@@ -1,3 +1,5 @@
+// Validation helpers for securities, time windows, decimals and currencies before emit.
+
 package emit
 
 import (

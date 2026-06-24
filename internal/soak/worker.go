@@ -1,3 +1,5 @@
+// Worker executes soak fetch requests and publishes results.
+
 package soak
 
 import (

@@ -1,3 +1,5 @@
+// Fetches and decodes Yahoo SEC filings.
+
 package yahoo
 
 import (

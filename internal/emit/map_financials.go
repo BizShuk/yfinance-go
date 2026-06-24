@@ -1,3 +1,5 @@
+// Maps scraped financials DTOs into ampy fundamentals protobufs.
+
 package emit
 
 import (

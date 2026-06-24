@@ -1,3 +1,5 @@
+// Normalizes Yahoo chart metadata into market-data snapshots.
+
 package norm
 
 import (

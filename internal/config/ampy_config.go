@@ -1,3 +1,5 @@
+// Loads the ampy YAML config and maps it into typed config (HTTP, bus, FX, rate-limit, concurrency).
+
 package config
 
 import (
@@ -480,8 +482,6 @@ func (c *Config) GetHTTPConfig() *HTTPConfig {
 		CircuitWindow:         time.Duration(c.CircuitBreaker.Window) * time.Second,
 		FailureThreshold:      c.CircuitBreaker.FailureThreshold,
 		ResetTimeout:          time.Duration(c.CircuitBreaker.ResetTimeoutMs) * time.Millisecond,
-		EnableSessionRotation: true,
-		NumSessions:           c.Sessions.N,
 	}
 }
 
@@ -501,8 +501,6 @@ type HTTPConfig struct {
 	CircuitWindow         time.Duration
 	FailureThreshold      float64
 	ResetTimeout          time.Duration
-	EnableSessionRotation bool
-	NumSessions           int
 }
 
 // GetBusConfig converts the configuration to bus.Config

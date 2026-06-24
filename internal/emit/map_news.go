@@ -1,3 +1,5 @@
+// Maps scraped news items into ampy news protobufs (URL and source cleaning).
+
 package emit
 
 import (

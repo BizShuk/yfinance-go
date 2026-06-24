@@ -1,3 +1,5 @@
+// YahooWebProvider fetches FX rates by scraping Yahoo chart endpoints.
+
 package fx
 
 import (

@@ -1,3 +1,5 @@
+// Parses Yahoo company-profile HTML into a comprehensive profile DTO.
+
 package scrape
 
 import (

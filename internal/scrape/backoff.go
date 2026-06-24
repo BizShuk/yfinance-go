@@ -1,3 +1,5 @@
+// BackoffPolicy computes scraping retry delays, honoring Retry-After.
+
 package scrape
 
 import (

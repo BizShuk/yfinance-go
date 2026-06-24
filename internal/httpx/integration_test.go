@@ -38,8 +38,6 @@ func TestCircuitBreakerIntegration(t *testing.T) {
 		FailureThreshold:      2,                      // Open after 2 failures
 		ResetTimeout:          100 * time.Millisecond, // Quick reset
 		UserAgent:             "test-agent",
-		EnableSessionRotation: false,
-		NumSessions:           1,
 	}
 
 	// Create client

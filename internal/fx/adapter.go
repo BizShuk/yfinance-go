@@ -1,3 +1,5 @@
+// Adapter bridges the FX Manager to norm's FXConverter interface.
+
 package fx
 
 import (

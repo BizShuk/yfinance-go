@@ -1,3 +1,5 @@
+// Prometheus metrics registration and recording for ingestion.
+
 package obsv
 
 import (

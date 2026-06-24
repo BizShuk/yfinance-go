@@ -1,3 +1,5 @@
+// ShouldSkip decides whether a cached raw artifact is fresh enough to skip refetching.
+
 package cache
 
 import (

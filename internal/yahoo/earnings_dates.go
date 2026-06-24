@@ -1,3 +1,5 @@
+// Parses Yahoo earnings-dates HTML.
+
 package yahoo
 
 import (

@@ -1,3 +1,5 @@
+// FXCache is an in-memory TTL cache of FX rate lookups.
+
 package fx
 
 import (

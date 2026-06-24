@@ -1,3 +1,5 @@
+// ScrapeMapper orchestrates mapping of scraped DTOs into ampy protobufs.
+
 package emit
 
 import (

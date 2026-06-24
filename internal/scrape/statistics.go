@@ -1,3 +1,5 @@
+// Parses Yahoo key-statistics pages into a DTO.
+
 package scrape
 
 import (

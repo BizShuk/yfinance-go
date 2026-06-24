@@ -1,3 +1,5 @@
+// ReadTickerList loads a newline-delimited ticker list from disk.
+
 package cache
 
 import (

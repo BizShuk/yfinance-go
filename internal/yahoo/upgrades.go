@@ -1,3 +1,5 @@
+// Fetches and decodes Yahoo analyst upgrades/downgrades.
+
 package yahoo
 
 import (

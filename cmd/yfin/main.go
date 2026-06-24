@@ -1060,10 +1060,6 @@ func createClient() (*yfinance.Client, error) {
 	if globalConfig.RetryMax > 0 {
 		httpConfig.MaxAttempts = globalConfig.RetryMax
 	}
-	if globalConfig.Sessions > 0 {
-		httpConfig.EnableSessionRotation = true
-		httpConfig.NumSessions = globalConfig.Sessions
-	}
 	if globalConfig.Timeout > 0 {
 		httpConfig.Timeout = globalConfig.Timeout
 	}
@@ -1084,14 +1080,9 @@ func createClient() (*yfinance.Client, error) {
 		CircuitWindow:         httpConfig.CircuitWindow,
 		FailureThreshold:      int(httpConfig.FailureThreshold * 100), // Convert to percentage
 		ResetTimeout:          httpConfig.ResetTimeout,
-		EnableSessionRotation: httpConfig.EnableSessionRotation,
-		NumSessions:           httpConfig.NumSessions,
 	}
 
 	// Create client
-	if httpConfig.EnableSessionRotation {
-		return yfinance.NewClientWithSessionRotation(), nil
-	}
 	return yfinance.NewClientWithConfig(httpxConfig), nil
 }
 

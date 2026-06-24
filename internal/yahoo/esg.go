@@ -1,3 +1,5 @@
+// Fetches and decodes Yahoo ESG scores.
+
 package yahoo
 
 import (

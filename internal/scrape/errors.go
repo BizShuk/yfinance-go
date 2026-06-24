@@ -1,3 +1,5 @@
+// ScrapeError typed errors for scraping failures.
+
 package scrape
 
 import (

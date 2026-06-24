@@ -1,3 +1,5 @@
+// Caller is the transport contract; Client.Call performs a GET and returns the body bytes.
+
 package httpx
 
 import (

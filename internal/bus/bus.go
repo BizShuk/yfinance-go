@@ -1,3 +1,5 @@
+// Bus is the high-level facade for publishing bars/quotes/fundamentals to the message bus, with preview support.
+
 package bus
 
 import (

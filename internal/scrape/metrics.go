@@ -1,3 +1,5 @@
+// Prometheus metrics for the scraper.
+
 package scrape
 
 import (

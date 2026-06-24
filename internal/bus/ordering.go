@@ -1,3 +1,5 @@
+// OrderedPublisher preserves per-key message ordering via buffered per-key queues.
+
 package bus
 
 import (

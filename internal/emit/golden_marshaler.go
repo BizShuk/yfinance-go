@@ -1,3 +1,5 @@
+// Converts ampy protobuf messages into golden-test JSON structs.
+
 package emit
 
 import (

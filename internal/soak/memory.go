@@ -1,3 +1,5 @@
+// MemoryMonitor samples memory usage and detects leaks during soak runs.
+
 package soak
 
 import (

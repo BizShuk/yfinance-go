@@ -1,3 +1,5 @@
+// EnvelopeBuilder constructs and validates ampy bus envelopes (incl. chunked) and computes schema hashes.
+
 package bus
 
 import (

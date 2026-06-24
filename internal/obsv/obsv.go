@@ -1,3 +1,5 @@
+// Observability init/shutdown (tracing + metrics) and configuration.
+
 package obsv
 
 import (

@@ -1,3 +1,5 @@
+// ObservableMapper wraps scrape mappers with tracing, metrics and validation.
+
 package emit
 
 import (

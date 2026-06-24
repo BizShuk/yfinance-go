@@ -1,3 +1,5 @@
+// CrumbManager handles Yahoo cookie+crumb authentication.
+
 package yahoo
 
 import (

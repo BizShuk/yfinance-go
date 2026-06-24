@@ -1,3 +1,5 @@
+// Maps scraped company-profile DTOs into normalized profile structures.
+
 package emit
 
 import (

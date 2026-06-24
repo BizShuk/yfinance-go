@@ -49,8 +49,6 @@ func TestHTTPAdapterRetriesBackoff(t *testing.T) {
 		FailureThreshold:      5,
 		ResetTimeout:          30 * time.Second,
 		UserAgent:             "test-agent",
-		EnableSessionRotation: false,
-		NumSessions:           1,
 	}
 
 	client := httpx.NewClient(config)
@@ -95,8 +93,6 @@ func TestHTTPAdapterCircuitBreaker(t *testing.T) {
 		FailureThreshold:      3,
 		ResetTimeout:          2 * time.Second,
 		UserAgent:             "test-agent",
-		EnableSessionRotation: false,
-		NumSessions:           1,
 	}
 
 	client := httpx.NewClient(config)
@@ -144,8 +140,6 @@ func TestHTTPAdapterRateLimiting(t *testing.T) {
 		FailureThreshold:      5,
 		ResetTimeout:          30 * time.Second,
 		UserAgent:             "test-agent",
-		EnableSessionRotation: false,
-		NumSessions:           1,
 	}
 
 	client := httpx.NewClient(config)
@@ -173,65 +167,6 @@ func TestHTTPAdapterRateLimiting(t *testing.T) {
 	finalCount := requestCount
 	mu.Unlock()
 	assert.Equal(t, 5, finalCount)
-}
-
-func TestHTTPAdapterSessionRotation(t *testing.T) {
-	sessionRequests := make(map[string]int)
-	var mu sync.Mutex
-
-	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Extract session info from User-Agent
-		sessionID := r.UserAgent()
-
-		mu.Lock()
-		sessionRequests[sessionID]++
-		mu.Unlock()
-
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("OK"))
-	}))
-	defer server.Close()
-
-	config := &httpx.Config{
-		BaseURL:               server.URL,
-		Timeout:               30 * time.Second,
-		IdleTimeout:           90 * time.Second,
-		MaxConnsPerHost:       5,
-		MaxAttempts:           1,
-		BackoffBaseMs:         100,
-		BackoffJitterMs:       50,
-		MaxDelayMs:            1000,
-		QPS:                   10.0,
-		Burst:                 10,
-		CircuitWindow:         60 * time.Second,
-		FailureThreshold:      5,
-		ResetTimeout:          30 * time.Second,
-		UserAgent:             "test-agent",
-		EnableSessionRotation: true,
-		NumSessions:           3,
-	}
-
-	client := httpx.NewClient(config)
-	req, err := http.NewRequest("GET", server.URL+"/test", nil)
-	require.NoError(t, err)
-
-	// Make multiple requests to test session rotation
-	for i := 0; i < 10; i++ {
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		resp, err := client.Do(ctx, req)
-		cancel()
-
-		require.NoError(t, err)
-		require.NotNil(t, resp)
-		resp.Body.Close()
-	}
-
-	mu.Lock()
-	sessionCount := len(sessionRequests)
-	mu.Unlock()
-
-	// Should have used multiple sessions (exact count depends on implementation)
-	assert.True(t, sessionCount > 1, "Should have used multiple sessions, got %d", sessionCount)
 }
 
 func TestHTTPAdapterErrorHandling(t *testing.T) {
@@ -290,8 +225,6 @@ func TestHTTPAdapterErrorHandling(t *testing.T) {
 				FailureThreshold:      5,
 				ResetTimeout:          30 * time.Second,
 				UserAgent:             "test-agent",
-				EnableSessionRotation: false,
-				NumSessions:           1,
 			}
 
 			client := httpx.NewClient(config)

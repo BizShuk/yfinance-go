@@ -1,3 +1,5 @@
+// Scraping HTTP client: fetch with robots checks, retries, metrics and tracing.
+
 package scrape
 
 import (
@@ -58,8 +60,6 @@ func NewClient(config *Config, httpxPool *httpx.Client) *client {
 			FailureThreshold:      5,
 			ResetTimeout:          30 * time.Second,
 			UserAgent:             config.UserAgent,
-			EnableSessionRotation: true,
-			NumSessions:           3,
 		}
 		httpClient = httpx.NewClient(httpxConfig)
 	}

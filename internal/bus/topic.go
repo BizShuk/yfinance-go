@@ -1,3 +1,5 @@
+// TopicBuilder derives bus topic names from key, environment and topic prefix.
+
 package bus
 
 import (

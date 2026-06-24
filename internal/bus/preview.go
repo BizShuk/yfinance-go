@@ -1,3 +1,5 @@
+// PreviewPublisher renders human-readable previews of bus messages without publishing.
+
 package bus
 
 import (

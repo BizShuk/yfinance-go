@@ -1,3 +1,5 @@
+// Fetches and extracts Yahoo chart metadata.
+
 package yahoo
 
 import (

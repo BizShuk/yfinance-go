@@ -1,3 +1,5 @@
+// NoneProvider is a no-op FX provider (performs no conversion).
+
 package fx
 
 import (

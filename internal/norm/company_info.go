@@ -1,3 +1,5 @@
+// Normalizes Yahoo chart metadata into company info.
+
 package norm
 
 import (

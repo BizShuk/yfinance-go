@@ -1,3 +1,5 @@
+// Parses Yahoo news HTML into news items.
+
 package scrape
 
 import (

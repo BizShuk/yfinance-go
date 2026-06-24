@@ -1,3 +1,5 @@
+// Structured per-request logger for the scraper.
+
 package scrape
 
 import (

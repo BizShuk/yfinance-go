@@ -1,3 +1,5 @@
+// Normalizes Yahoo fundamentals (income/balance/cashflow) into canonical lines.
+
 package norm
 
 import (

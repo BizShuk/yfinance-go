@@ -1,3 +1,5 @@
+// Yahoo Finance API client (bars, quotes, fundamentals via chart/quoteSummary).
+
 package yahoo
 
 import (

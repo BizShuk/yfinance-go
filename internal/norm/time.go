@@ -1,3 +1,5 @@
+// UTC time and day-boundary conversion helpers for epoch timestamps.
+
 package norm
 
 import (

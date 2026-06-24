@@ -1,3 +1,5 @@
+// Fetches Yahoo quoteSummary modules with crumb auth and 401 retry.
+
 package yahoo
 
 import (

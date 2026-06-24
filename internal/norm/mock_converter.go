@@ -1,3 +1,5 @@
+// MockFXConverter is an in-package FX converter stub for tests.
+
 package norm
 
 import (

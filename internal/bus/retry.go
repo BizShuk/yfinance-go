@@ -1,3 +1,5 @@
+// RetryPolicy classifies retryable errors and computes publish retry behavior.
+
 package bus
 
 import (

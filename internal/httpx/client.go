@@ -1,3 +1,5 @@
+// Client is a resilient HTTP client (retry, backoff, rate limiting, circuit breaker).
+
 package httpx
 
 import (
@@ -30,8 +32,6 @@ type Config struct {
 	FailureThreshold      int
 	ResetTimeout          time.Duration
 	UserAgent             string
-	EnableSessionRotation bool
-	NumSessions           int
 }
 
 // DefaultConfig returns a sensible default configuration
@@ -51,55 +51,22 @@ func DefaultConfig() *Config {
 		FailureThreshold:      3, // Reduced failure threshold
 		ResetTimeout:          30 * time.Second,
 		UserAgent:             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-		EnableSessionRotation: false, // Disabled by default
-		NumSessions:           5,     // Default number of sessions
 	}
 }
 
-// SessionRotationConfig returns a configuration optimized for session rotation
-func SessionRotationConfig() *Config {
-	return &Config{
-		BaseURL:               "https://query1.finance.yahoo.com",
-		Timeout:               30 * time.Second,
-		IdleTimeout:           90 * time.Second,
-		MaxConnsPerHost:       10,
-		MaxAttempts:           2,    // Reduced since we have multiple sessions
-		BackoffBaseMs:         100,  // Reduced since sessions distribute load
-		BackoffJitterMs:       50,   // Reduced jitter
-		MaxDelayMs:            5000, // Reduced max delay
-		QPS:                   5.0,  // Increased QPS since we have session rotation
-		Burst:                 10,   // Increased burst size
-		CircuitWindow:         60 * time.Second,
-		FailureThreshold:      5, // Increased failure threshold
-		ResetTimeout:          30 * time.Second,
-		UserAgent:             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-		EnableSessionRotation: true, // Enable session rotation
-		NumSessions:           7,    // Use 7 sessions for good distribution
-	}
-}
-
-// Client provides a robust HTTP client with retry, backoff, rate limiting, circuit breaker, and session rotation
+// Client provides a robust HTTP client with retry, backoff, rate limiting, and circuit breaker
 type Client struct {
 	config         *Config
 	httpClient     *http.Client
 	jar            *cookiejar.Jar
 	rateLimiter    *RateLimiter
 	circuitBreaker *CircuitBreaker
-	sessionManager *SessionManager
 }
 
 // NewClient creates a new HTTP client with the given configuration
 func NewClient(config *Config) *Client {
 	if config == nil {
 		config = DefaultConfig()
-	}
-
-	// Initialize session manager if session rotation is enabled
-	var sessionManager *SessionManager
-	if config.EnableSessionRotation {
-		sessionManager = NewSessionManager(config.BaseURL, config.NumSessions)
-		// Initialize sessions to get initial cookies
-		_ = sessionManager.InitializeSessions()
 	}
 
 	// Create cookie jar for persistent cookie storage (required for Yahoo crumb auth)
@@ -123,7 +90,6 @@ func NewClient(config *Config) *Client {
 		jar:            jar,
 		rateLimiter:    NewRateLimiter(int(config.QPS), config.Burst),
 		circuitBreaker: NewCircuitBreaker(config.CircuitWindow, config.FailureThreshold, config.ResetTimeout),
-		sessionManager: sessionManager,
 	}
 }
 
@@ -157,14 +123,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request) (*http.Response, err
 	startTime := time.Now()
 
 	for attempt := 0; attempt < c.config.MaxAttempts; attempt++ {
-		// Get session for this attempt if session rotation is enabled
-		var clientToUse *http.Client = c.httpClient
-		if c.sessionManager != nil {
-			clientToUse = c.sessionManager.GetNextSession()
-		}
-
-		// Execute request with the selected client (either default or rotated session)
-		resp, err := clientToUse.Do(req.WithContext(ctx))
+		// Execute request with the shared client
+		resp, err := c.httpClient.Do(req.WithContext(ctx))
 		if err != nil {
 			lastErr = err
 			c.circuitBreaker.RecordFailure()
@@ -467,19 +427,6 @@ func (cb *CircuitBreaker) Failures() int {
 	cb.mu.RLock()
 	defer cb.mu.RUnlock()
 	return cb.failures
-}
-
-// GetSessionStats returns session usage statistics
-func (c *Client) GetSessionStats() map[string]interface{} {
-	if c.sessionManager == nil {
-		return map[string]interface{}{
-			"session_rotation_enabled": false,
-		}
-	}
-
-	stats := c.sessionManager.GetSessionStats()
-	stats["session_rotation_enabled"] = true
-	return stats
 }
 
 // Jar returns the cookie jar used by this client.

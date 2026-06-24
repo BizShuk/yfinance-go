@@ -1,3 +1,5 @@
+// CanonicalJSONMarshaler produces deterministic (key-sorted) JSON for checksums and golden files.
+
 package emit
 
 import (

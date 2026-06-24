@@ -1,3 +1,5 @@
+// Emits normalized bar batches into ampy protobuf BarBatch messages.
+
 package emit
 
 import (

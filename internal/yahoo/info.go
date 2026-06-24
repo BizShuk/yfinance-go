@@ -1,3 +1,5 @@
+// Fetches and decodes a flattened Yahoo info map.
+
 package yahoo
 
 import (

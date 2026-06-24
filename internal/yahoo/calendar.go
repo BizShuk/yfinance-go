@@ -1,3 +1,5 @@
+// Fetches and decodes Yahoo earnings-calendar data.
+
 package yahoo
 
 import (

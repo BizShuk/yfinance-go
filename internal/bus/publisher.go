@@ -1,3 +1,5 @@
+// BusPublisher is the concrete transport-backed Publisher implementation.
+
 package bus
 
 import (

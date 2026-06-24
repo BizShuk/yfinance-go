@@ -50,7 +50,7 @@ func basicScrapeExample() {
 func comprehensiveDataExample() {
 	fmt.Println("\n=== Example 2: Comprehensive Data Collection ===")
 
-	client := yfinance.NewClientWithSessionRotation() // Use session rotation for better reliability
+	client := yfinance.NewClient() // Use session rotation for better reliability
 	ctx := context.Background()
 	ticker := "MSFT"
 	runID := fmt.Sprintf("example-comprehensive-%d", time.Now().Unix())
@@ -193,7 +193,7 @@ func advancedConfigExample() {
 func batchProcessingExample() {
 	fmt.Println("\n=== Example 4: Batch Processing ===")
 
-	client := yfinance.NewClientWithSessionRotation()
+	client := yfinance.NewClient()
 	ctx := context.Background()
 	runID := fmt.Sprintf("example-batch-%d", time.Now().Unix())
 
@@ -277,7 +277,7 @@ func batchProcessingExample() {
 func pipelineIntegrationExample() {
 	fmt.Println("\n=== Example 5: Pipeline Integration ===")
 
-	client := yfinance.NewClientWithSessionRotation()
+	client := yfinance.NewClient()
 	ctx := context.Background()
 
 	// Simulate a data pipeline that processes financial data

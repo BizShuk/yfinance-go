@@ -51,20 +51,6 @@ func NewClientWithConfig(config *httpx.Config) *Client {
 	}
 }
 
-// NewClientWithSessionRotation creates a new Yahoo Finance client with session rotation enabled
-func NewClientWithSessionRotation() *Client {
-	config := httpx.SessionRotationConfig()
-	httpClient := httpx.NewClient(config)
-	yahooClient := yahoo.NewClient(httpClient, config.BaseURL)
-	scrapeClient := scrape.NewClient(scrape.DefaultConfig(), httpClient)
-
-	return &Client{
-		yahooClient:  yahooClient,
-		scrapeClient: scrapeClient,
-		micCache:     make(map[string]string),
-	}
-}
-
 // FetchDailyBars fetches daily bars for a symbol and returns normalized data
 func (c *Client) FetchDailyBars(ctx context.Context, symbol string, start, end time.Time, adjusted bool, runID string) (*norm.NormalizedBarBatch, error) {
 	// Fetch raw data

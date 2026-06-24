@@ -1,3 +1,5 @@
+// Manager coordinates FX rate retrieval, caching and value conversion.
+
 package fx
 
 import (

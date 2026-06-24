@@ -1,3 +1,5 @@
+// Fetches and parses a security's ISIN.
+
 package yahoo
 
 import (

@@ -1,3 +1,5 @@
+// HTTPError is the typed error returned for non-2xx HTTP responses.
+
 package httpx
 
 import (

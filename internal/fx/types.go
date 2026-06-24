@@ -1,3 +1,5 @@
+// FX provider interface, configuration types and defaults.
+
 package fx
 
 import (

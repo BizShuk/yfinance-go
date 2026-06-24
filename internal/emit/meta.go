@@ -1,3 +1,5 @@
+// Builds and validates ampy Meta (provenance and checksum stamping) for messages.
+
 package emit
 
 import (

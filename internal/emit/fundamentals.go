@@ -1,3 +1,5 @@
+// Emits normalized fundamentals snapshots into ampy protobuf messages.
+
 package emit
 
 import (

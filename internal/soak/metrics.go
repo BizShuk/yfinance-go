@@ -1,3 +1,5 @@
+// Prometheus metrics for soak runs.
+
 package soak
 
 import (

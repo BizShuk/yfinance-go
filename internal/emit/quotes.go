@@ -1,3 +1,5 @@
+// Emits normalized quotes into ampy protobuf QuoteTick messages.
+
 package emit
 
 import (

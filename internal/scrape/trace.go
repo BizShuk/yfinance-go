@@ -1,3 +1,5 @@
+// OpenTelemetry tracing helpers for scraping spans.
+
 package scrape
 
 import (

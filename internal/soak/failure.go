@@ -1,3 +1,5 @@
+// FailureServer injects HTTP failures for soak testing.
+
 package soak
 
 import (

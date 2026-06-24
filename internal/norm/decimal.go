@@ -1,3 +1,5 @@
+// Scaled-decimal conversion helpers and per-currency scale rules.
+
 package norm
 
 import (

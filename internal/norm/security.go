@@ -1,3 +1,5 @@
+// Security construction, MIC inference, symbol cleaning and validation.
+
 package norm
 
 import (

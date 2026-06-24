@@ -1,3 +1,5 @@
+// Parses Yahoo analysis pages into a comprehensive analysis DTO.
+
 package scrape
 
 import (

@@ -1,3 +1,5 @@
+// Normalizes Yahoo bars into the canonical bar-batch model.
+
 package norm
 
 import (

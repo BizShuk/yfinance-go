@@ -1,3 +1,5 @@
+// Orchestrator drives the soak test: workers, endpoints and aggregate stats.
+
 package soak
 
 import (
@@ -117,7 +119,7 @@ func NewOrchestrator(cfg *config.Config, soakCfg *SoakConfig) (*Orchestrator, er
 	endpoints := parseEndpoints(soakCfg.Endpoints)
 
 	// Create client with session rotation for better resilience
-	client := yfinance.NewClientWithSessionRotation()
+	client := yfinance.NewClient()
 
 	// Create bus if publishing is enabled
 	var busInstance *bus.Bus

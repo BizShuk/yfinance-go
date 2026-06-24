@@ -1,3 +1,5 @@
+// Converts money/percent/float values to and from ampy scaled-decimal protobufs.
+
 package emit
 
 import (

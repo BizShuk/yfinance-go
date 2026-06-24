@@ -1,3 +1,5 @@
+// RobotsManager fetches/caches robots.txt and enforces crawl policy.
+
 package scrape
 
 import (

@@ -1,3 +1,5 @@
+// Parses Yahoo analyst-insights pages into a DTO.
+
 package scrape
 
 import (

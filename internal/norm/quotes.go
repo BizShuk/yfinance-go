@@ -1,3 +1,5 @@
+// Normalizes Yahoo quotes into the canonical quote model.
+
 package norm
 
 import (
