@@ -231,34 +231,6 @@ func cleanString(s string) string {
 	return strings.Join(words, " ")
 }
 
-// ValidateProfileData validates the profile data structure
-func ValidateProfileData(profile *NormalizedProfile) error {
-	if profile == nil {
-		return fmt.Errorf("profile cannot be nil")
-	}
-
-	if profile.Security.Symbol == "" {
-		return fmt.Errorf("security symbol cannot be empty")
-	}
-
-	// Validate executive compensation currencies
-	for i, exec := range profile.Executives {
-		if exec.Compensation != nil {
-			if exec.Compensation.TotalPay != nil && exec.Compensation.TotalPay.Currency == "" {
-				return fmt.Errorf("executive %d total pay currency cannot be empty", i)
-			}
-			if exec.Compensation.ExercisedValue != nil && exec.Compensation.ExercisedValue.Currency == "" {
-				return fmt.Errorf("executive %d exercised value currency cannot be empty", i)
-			}
-			if exec.Compensation.UnexercisedValue != nil && exec.Compensation.UnexercisedValue.Currency == "" {
-				return fmt.Errorf("executive %d unexercised value currency cannot be empty", i)
-			}
-		}
-	}
-
-	return nil
-}
-
 // ProfileSummary provides a concise summary of profile data for preview
 type ProfileSummary struct {
 	Symbol         string `json:"symbol"`
@@ -269,20 +241,4 @@ type ProfileSummary struct {
 	ExecutiveCount int    `json:"executive_count"`
 	HasGovernance  bool   `json:"has_governance"`
 	JSONSizeBytes  int    `json:"json_size_bytes"`
-}
-
-// CreateProfileSummary creates a summary of profile data for preview
-func CreateProfileSummary(result *ProfileMappingResult, profile *NormalizedProfile) *ProfileSummary {
-	summary := &ProfileSummary{
-		Symbol:         profile.Security.Symbol,
-		CompanyName:    profile.Company.Name,
-		Industry:       profile.Company.Industry,
-		Sector:         profile.Company.Sector,
-		Employees:      profile.Company.FullTimeEmployees,
-		ExecutiveCount: len(profile.Executives),
-		HasGovernance:  profile.Governance != (GovernanceInfo{}),
-		JSONSizeBytes:  len(result.JSONBytes),
-	}
-
-	return summary
 }

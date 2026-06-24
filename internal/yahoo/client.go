@@ -97,39 +97,20 @@ func (c *Client) FetchQuote(ctx context.Context, symbol string) (*QuoteResponse,
 	return quoteResp, nil
 }
 
-// FetchFundamentalsQuarterly fetches quarterly fundamentals for a symbol
+// FundamentalsModules are the quoteSummary modules required for quarterly financials.
+var FundamentalsModules = []string{
+	"incomeStatementHistoryQuarterly",
+	"balanceSheetHistoryQuarterly",
+	"cashflowStatementHistoryQuarterly",
+}
+
+// FetchFundamentalsQuarterly fetches quarterly fundamentals for a symbol using crumb auth.
 func (c *Client) FetchFundamentalsQuarterly(ctx context.Context, symbol string) (*FundamentalsResponse, error) {
-	// Build URL for fundamentals
-	u, err := c.buildFundamentalsURL(symbol)
+	raw, err := c.FetchQuoteSummary(ctx, symbol, FundamentalsModules)
 	if err != nil {
-		return nil, fmt.Errorf("failed to build fundamentals URL: %w", err)
+		return nil, err
 	}
-
-	// Create request
-	req, err := http.NewRequestWithContext(ctx, "GET", u, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create request: %w", err)
-	}
-
-	// Execute request
-	resp, err := c.httpClient.Do(ctx, req)
-	if err != nil {
-		return nil, fmt.Errorf("failed to fetch fundamentals: %w", err)
-	}
-	defer resp.Body.Close()
-
-	// Decode response
-	fundResp, err := DecodeFundamentalsResponseFromReader(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to decode fundamentals response: %w", err)
-	}
-
-	// Validate response has data
-	if len(fundResp.QuoteSummary.Result) == 0 {
-		return nil, fmt.Errorf("no fundamentals results found")
-	}
-
-	return fundResp, nil
+	return DecodeFundamentalsResponse(raw)
 }
 
 // fetchChartRaw returns the raw bytes of the chart response for the given lookback window in days.
@@ -166,21 +147,6 @@ func (c *Client) buildBarsURL(symbol string, start, end time.Time, adjusted bool
 	params.Set("interval", "1d")
 	params.Set("includePrePost", "false")
 	params.Set("events", "div,split")
-
-	u.RawQuery = params.Encode()
-	return u.String(), nil
-}
-
-// buildFundamentalsURL builds the URL for fetching fundamentals
-func (c *Client) buildFundamentalsURL(symbol string) (string, error) {
-	u, err := url.Parse(c.baseURL + "/v10/finance/quoteSummary/" + symbol)
-	if err != nil {
-		return "", err
-	}
-
-	// Add query parameters
-	params := url.Values{}
-	params.Set("modules", "incomeStatementHistoryQuarterly,balanceSheetHistoryQuarterly,cashflowStatementHistoryQuarterly")
 
 	u.RawQuery = params.Encode()
 	return u.String(), nil

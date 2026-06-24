@@ -468,39 +468,39 @@ func (l *Loader) redactSecretPatterns(configMap map[string]interface{}) {
 // GetHTTPConfig converts the configuration to httpx.Config
 func (c *Config) GetHTTPConfig() *HTTPConfig {
 	return &HTTPConfig{
-		BaseURL:               c.Yahoo.BaseURL,
-		Timeout:               time.Duration(c.Yahoo.TimeoutMs) * time.Millisecond,
-		IdleTimeout:           time.Duration(c.Yahoo.IdleTimeoutMs) * time.Millisecond,
-		MaxConnsPerHost:       c.Yahoo.MaxConnsPerHost,
-		UserAgent:             c.Yahoo.UserAgent,
-		MaxAttempts:           c.Retry.Attempts,
-		BackoffBaseMs:         c.Retry.BaseMs,
-		BackoffJitterMs:       c.Retry.BaseMs / 2, // Default jitter
-		MaxDelayMs:            c.Retry.MaxDelayMs,
-		QPS:                   c.RateLimit.PerHostQPS,
-		Burst:                 c.RateLimit.PerHostBurst,
-		CircuitWindow:         time.Duration(c.CircuitBreaker.Window) * time.Second,
-		FailureThreshold:      c.CircuitBreaker.FailureThreshold,
-		ResetTimeout:          time.Duration(c.CircuitBreaker.ResetTimeoutMs) * time.Millisecond,
+		BaseURL:          c.Yahoo.BaseURL,
+		Timeout:          time.Duration(c.Yahoo.TimeoutMs) * time.Millisecond,
+		IdleTimeout:      time.Duration(c.Yahoo.IdleTimeoutMs) * time.Millisecond,
+		MaxConnsPerHost:  c.Yahoo.MaxConnsPerHost,
+		UserAgent:        c.Yahoo.UserAgent,
+		MaxAttempts:      c.Retry.Attempts,
+		BackoffBaseMs:    c.Retry.BaseMs,
+		BackoffJitterMs:  c.Retry.BaseMs / 2, // Default jitter
+		MaxDelayMs:       c.Retry.MaxDelayMs,
+		QPS:              c.RateLimit.PerHostQPS,
+		Burst:            c.RateLimit.PerHostBurst,
+		CircuitWindow:    time.Duration(c.CircuitBreaker.Window) * time.Second,
+		FailureThreshold: c.CircuitBreaker.FailureThreshold,
+		ResetTimeout:     time.Duration(c.CircuitBreaker.ResetTimeoutMs) * time.Millisecond,
 	}
 }
 
 // HTTPConfig represents HTTP client configuration (compatible with httpx.Config)
 type HTTPConfig struct {
-	BaseURL               string
-	Timeout               time.Duration
-	IdleTimeout           time.Duration
-	MaxConnsPerHost       int
-	UserAgent             string
-	MaxAttempts           int
-	BackoffBaseMs         int
-	BackoffJitterMs       int
-	MaxDelayMs            int
-	QPS                   float64
-	Burst                 int
-	CircuitWindow         time.Duration
-	FailureThreshold      float64
-	ResetTimeout          time.Duration
+	BaseURL          string
+	Timeout          time.Duration
+	IdleTimeout      time.Duration
+	MaxConnsPerHost  int
+	UserAgent        string
+	MaxAttempts      int
+	BackoffBaseMs    int
+	BackoffJitterMs  int
+	MaxDelayMs       int
+	QPS              float64
+	Burst            int
+	CircuitWindow    time.Duration
+	FailureThreshold float64
+	ResetTimeout     time.Duration
 }
 
 // GetBusConfig converts the configuration to bus.Config

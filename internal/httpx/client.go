@@ -18,39 +18,39 @@ import (
 
 // Config holds HTTP client configuration
 type Config struct {
-	BaseURL               string
-	Timeout               time.Duration
-	IdleTimeout           time.Duration
-	MaxConnsPerHost       int
-	MaxAttempts           int
-	BackoffBaseMs         int
-	BackoffJitterMs       int
-	MaxDelayMs            int
-	QPS                   float64
-	Burst                 int
-	CircuitWindow         time.Duration
-	FailureThreshold      int
-	ResetTimeout          time.Duration
-	UserAgent             string
+	BaseURL          string
+	Timeout          time.Duration
+	IdleTimeout      time.Duration
+	MaxConnsPerHost  int
+	MaxAttempts      int
+	BackoffBaseMs    int
+	BackoffJitterMs  int
+	MaxDelayMs       int
+	QPS              float64
+	Burst            int
+	CircuitWindow    time.Duration
+	FailureThreshold int
+	ResetTimeout     time.Duration
+	UserAgent        string
 }
 
 // DefaultConfig returns a sensible default configuration
 func DefaultConfig() *Config {
 	return &Config{
-		BaseURL:               "https://query1.finance.yahoo.com",
-		Timeout:               30 * time.Second,
-		IdleTimeout:           90 * time.Second,
-		MaxConnsPerHost:       10,
-		MaxAttempts:           3,     // Reduced to avoid overwhelming the API
-		BackoffBaseMs:         200,   // Increased base delay
-		BackoffJitterMs:       100,   // Increased jitter
-		MaxDelayMs:            10000, // Increased max delay
-		QPS:                   1.0,   // Reduced QPS to be more conservative
-		Burst:                 3,     // Reduced burst size
-		CircuitWindow:         60 * time.Second,
-		FailureThreshold:      3, // Reduced failure threshold
-		ResetTimeout:          30 * time.Second,
-		UserAgent:             "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+		BaseURL:          "https://query1.finance.yahoo.com",
+		Timeout:          30 * time.Second,
+		IdleTimeout:      90 * time.Second,
+		MaxConnsPerHost:  10,
+		MaxAttempts:      3,     // Reduced to avoid overwhelming the API
+		BackoffBaseMs:    200,   // Increased base delay
+		BackoffJitterMs:  100,   // Increased jitter
+		MaxDelayMs:       10000, // Increased max delay
+		QPS:              1.0,   // Reduced QPS to be more conservative
+		Burst:            3,     // Reduced burst size
+		CircuitWindow:    60 * time.Second,
+		FailureThreshold: 3, // Reduced failure threshold
+		ResetTimeout:     30 * time.Second,
+		UserAgent:        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
 	}
 }
 

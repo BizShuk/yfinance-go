@@ -29,18 +29,3 @@ func ToUTCDayBoundaries(timestamp int64) (start, end, eventTime time.Time) {
 
 	return start, end, eventTime
 }
-
-// ToUTCTime converts a Unix timestamp to UTC time
-func ToUTCTime(timestamp int64) time.Time {
-	return time.Unix(timestamp, 0).UTC()
-}
-
-// ToUTCTimeFromMilliseconds converts a Unix timestamp in milliseconds to UTC time
-func ToUTCTimeFromMilliseconds(timestamp int64) time.Time {
-	return time.Unix(timestamp/1000, (timestamp%1000)*1e6).UTC()
-}
-
-// GetCurrentUTCTime returns the current UTC time
-func GetCurrentUTCTime() time.Time {
-	return time.Now().UTC()
-}

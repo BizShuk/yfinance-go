@@ -116,30 +116,11 @@ type BackoffPolicyConfig struct {
 	JitterFactor float64
 }
 
-// DefaultBackoffPolicyConfig returns a sensible default backoff policy
-func DefaultBackoffPolicyConfig() *BackoffPolicyConfig {
-	return &BackoffPolicyConfig{
-		BaseDelay:    300 * time.Millisecond,
-		MaxDelay:     4 * time.Second,
-		Multiplier:   2.0,
-		JitterFactor: 0.2, // ±20% jitter
-	}
-}
-
 // RateLimitConfig represents rate limiting configuration
 type RateLimitConfig struct {
 	QPS            float64
 	Burst          int
 	PerHostWorkers int
-}
-
-// DefaultRateLimitConfig returns a sensible default rate limit configuration
-func DefaultRateLimitConfig() *RateLimitConfig {
-	return &RateLimitConfig{
-		QPS:            0.7,
-		Burst:          1,
-		PerHostWorkers: 4,
-	}
 }
 
 // NewsItem represents a single news article extracted from Yahoo Finance

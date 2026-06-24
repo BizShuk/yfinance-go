@@ -55,22 +55,6 @@ func ErrHTTP(status int, url string) *ScrapeError {
 	}
 }
 
-// ErrMissingField creates a missing field error
-func ErrMissingField(field string) *ScrapeError {
-	return &ScrapeError{
-		Type:    "missing_field",
-		Message: fmt.Sprintf("required field '%s' is missing", field),
-	}
-}
-
-// ErrSchemaDrift creates a schema drift error
-func ErrSchemaDrift(field string) *ScrapeError {
-	return &ScrapeError{
-		Type:    "schema_drift",
-		Message: fmt.Sprintf("unexpected schema change in field '%s'", field),
-	}
-}
-
 // IsRetryableError determines if an error should trigger a retry
 func IsRetryableError(err error) bool {
 	if err == nil {

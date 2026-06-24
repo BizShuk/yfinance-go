@@ -24,20 +24,20 @@ func TestCircuitBreakerIntegration(t *testing.T) {
 
 	// Create config with aggressive circuit breaker settings
 	config := &Config{
-		BaseURL:               server.URL,
-		Timeout:               5 * time.Second,
-		IdleTimeout:           30 * time.Second,
-		MaxConnsPerHost:       1,
-		MaxAttempts:           1, // No retries
-		BackoffBaseMs:         100,
-		BackoffJitterMs:       50,
-		MaxDelayMs:            1000,
-		QPS:                   10.0, // High QPS to trigger failures quickly
-		Burst:                 10,
-		CircuitWindow:         1 * time.Second,        // Short window
-		FailureThreshold:      2,                      // Open after 2 failures
-		ResetTimeout:          100 * time.Millisecond, // Quick reset
-		UserAgent:             "test-agent",
+		BaseURL:          server.URL,
+		Timeout:          5 * time.Second,
+		IdleTimeout:      30 * time.Second,
+		MaxConnsPerHost:  1,
+		MaxAttempts:      1, // No retries
+		BackoffBaseMs:    100,
+		BackoffJitterMs:  50,
+		MaxDelayMs:       1000,
+		QPS:              10.0, // High QPS to trigger failures quickly
+		Burst:            10,
+		CircuitWindow:    1 * time.Second,        // Short window
+		FailureThreshold: 2,                      // Open after 2 failures
+		ResetTimeout:     100 * time.Millisecond, // Quick reset
+		UserAgent:        "test-agent",
 	}
 
 	// Create client

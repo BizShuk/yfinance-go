@@ -168,22 +168,3 @@ func (m *ScrapeMapper) createMeta(schemaVersion string) *commonv1.Meta {
 		// Note: Checksum and ProducedAt can be added if needed
 	}
 }
-
-// ScaledFromFloat converts a float64 to a scaled decimal with the given scale
-func ScaledFromFloat(value float64, scale int) *commonv1.Decimal {
-	if scale < 0 || scale > 9 {
-		scale = 2 // Default to 2 decimal places for currency
-	}
-
-	multiplier := int64(1)
-	for i := 0; i < scale; i++ {
-		multiplier *= 10
-	}
-
-	scaled := int64(value * float64(multiplier))
-
-	return &commonv1.Decimal{
-		Scaled: scaled,
-		Scale:  int32(scale),
-	}
-}

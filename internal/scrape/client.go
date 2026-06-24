@@ -46,20 +46,20 @@ func NewClient(config *Config, httpxPool *httpx.Client) *client {
 	} else {
 		// Create a new httpx client with scraping-optimized config
 		httpxConfig := &httpx.Config{
-			BaseURL:               "https://finance.yahoo.com",
-			Timeout:               time.Duration(config.TimeoutMs) * time.Millisecond,
-			IdleTimeout:           90 * time.Second,
-			MaxConnsPerHost:       10,
-			MaxAttempts:           config.Retry.Attempts,
-			BackoffBaseMs:         config.Retry.BaseMs,
-			BackoffJitterMs:       config.Retry.BaseMs / 2,
-			MaxDelayMs:            config.Retry.MaxDelayMs,
-			QPS:                   config.QPS,
-			Burst:                 config.Burst,
-			CircuitWindow:         60 * time.Second,
-			FailureThreshold:      5,
-			ResetTimeout:          30 * time.Second,
-			UserAgent:             config.UserAgent,
+			BaseURL:          "https://finance.yahoo.com",
+			Timeout:          time.Duration(config.TimeoutMs) * time.Millisecond,
+			IdleTimeout:      90 * time.Second,
+			MaxConnsPerHost:  10,
+			MaxAttempts:      config.Retry.Attempts,
+			BackoffBaseMs:    config.Retry.BaseMs,
+			BackoffJitterMs:  config.Retry.BaseMs / 2,
+			MaxDelayMs:       config.Retry.MaxDelayMs,
+			QPS:              config.QPS,
+			Burst:            config.Burst,
+			CircuitWindow:    60 * time.Second,
+			FailureThreshold: 5,
+			ResetTimeout:     30 * time.Second,
+			UserAgent:        config.UserAgent,
 		}
 		httpClient = httpx.NewClient(httpxConfig)
 	}

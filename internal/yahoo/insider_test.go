@@ -38,17 +38,17 @@ func TestDecodeInsider_EmptyResult(t *testing.T) {
 
 func TestInsiderPurchaseSummaryTable(t *testing.T) {
 	dto := &NetSharePurchaseActivity{
-		Period:                    "6m",
-		BuyInfoShares:             RawInt{Raw: int64Ptr(5000)},
-		SellInfoShares:            RawInt{Raw: int64Ptr(2000)},
-		NetInfoShares:             RawInt{Raw: int64Ptr(3000)},
-		TotalInsiderShares:        RawInt{Raw: int64Ptr(100000)},
-		NetPercentInsiderShares:   RawValue{Raw: float64Ptr(0.03)},
-		BuyPercentInsiderShares:   RawValue{Raw: float64Ptr(0.05)},
-		SellPercentInsiderShares:  RawValue{Raw: float64Ptr(0.02)},
-		BuyInfoCount:              RawInt{Raw: int64Ptr(10)},
-		SellInfoCount:             RawInt{Raw: int64Ptr(5)},
-		NetInfoCount:              RawInt{Raw: int64Ptr(5)},
+		Period:                   "6m",
+		BuyInfoShares:            RawInt{Raw: int64Ptr(5000)},
+		SellInfoShares:           RawInt{Raw: int64Ptr(2000)},
+		NetInfoShares:            RawInt{Raw: int64Ptr(3000)},
+		TotalInsiderShares:       RawInt{Raw: int64Ptr(100000)},
+		NetPercentInsiderShares:  RawValue{Raw: float64Ptr(0.03)},
+		BuyPercentInsiderShares:  RawValue{Raw: float64Ptr(0.05)},
+		SellPercentInsiderShares: RawValue{Raw: float64Ptr(0.02)},
+		BuyInfoCount:             RawInt{Raw: int64Ptr(10)},
+		SellInfoCount:            RawInt{Raw: int64Ptr(5)},
+		NetInfoCount:             RawInt{Raw: int64Ptr(5)},
 	}
 	tbl := InsiderPurchaseSummaryTable(dto)
 	require.Equal(t, "Insider Purchases Last 6m", tbl.LabelColumn)

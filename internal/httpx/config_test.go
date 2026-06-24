@@ -69,20 +69,20 @@ func TestDefaultConfig(t *testing.T) {
 func TestConfigFields(t *testing.T) {
 	// Test that we can create a config with all fields
 	config := &Config{
-		BaseURL:               "https://example.com",
-		Timeout:               30 * time.Second,
-		IdleTimeout:           90 * time.Second,
-		MaxConnsPerHost:       10,
-		MaxAttempts:           3,
-		BackoffBaseMs:         200,
-		BackoffJitterMs:       100,
-		MaxDelayMs:            10000,
-		QPS:                   1.0,
-		Burst:                 3,
-		CircuitWindow:         60 * time.Second,
-		FailureThreshold:      3,
-		ResetTimeout:          30 * time.Second,
-		UserAgent:             "test-agent",
+		BaseURL:          "https://example.com",
+		Timeout:          30 * time.Second,
+		IdleTimeout:      90 * time.Second,
+		MaxConnsPerHost:  10,
+		MaxAttempts:      3,
+		BackoffBaseMs:    200,
+		BackoffJitterMs:  100,
+		MaxDelayMs:       10000,
+		QPS:              1.0,
+		Burst:            3,
+		CircuitWindow:    60 * time.Second,
+		FailureThreshold: 3,
+		ResetTimeout:     30 * time.Second,
+		UserAgent:        "test-agent",
 	}
 
 	// Basic validation that fields are set

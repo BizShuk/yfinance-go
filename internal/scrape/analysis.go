@@ -331,7 +331,7 @@ func extractEarningsEstimate(html string, dto *ComprehensiveAnalysisDTO) error {
 	if sectionStart == -1 {
 		return fmt.Errorf("earnings estimate section not found")
 	}
-	
+
 	// Find the end of the section (next data-testid or </section>)
 	sectionEnd := strings.Index(html[sectionStart:], "</section>")
 	if sectionEnd == -1 {
@@ -345,7 +345,7 @@ func extractEarningsEstimate(html string, dto *ComprehensiveAnalysisDTO) error {
 	} else {
 		sectionEnd += len("</section>")
 	}
-	
+
 	match := html[sectionStart : sectionStart+sectionEnd]
 
 	// Extract currency from table header
@@ -411,7 +411,7 @@ func extractRevenueEstimate(html string, dto *ComprehensiveAnalysisDTO) error {
 	if sectionStart == -1 {
 		return fmt.Errorf("revenue estimate section not found")
 	}
-	
+
 	// Find the end of the section (next data-testid or </section>)
 	sectionEnd := strings.Index(html[sectionStart:], "</section>")
 	if sectionEnd == -1 {
@@ -425,7 +425,7 @@ func extractRevenueEstimate(html string, dto *ComprehensiveAnalysisDTO) error {
 	} else {
 		sectionEnd += len("</section>")
 	}
-	
+
 	match := html[sectionStart : sectionStart+sectionEnd]
 
 	// Extract currency from table header
@@ -496,7 +496,7 @@ func extractEarningsHistory(html string, dto *ComprehensiveAnalysisDTO) error {
 	if sectionStart == -1 {
 		return fmt.Errorf("earnings history section not found")
 	}
-	
+
 	// Find the end of the section (next data-testid or </section>)
 	sectionEnd := strings.Index(html[sectionStart:], "</section>")
 	if sectionEnd == -1 {
@@ -510,7 +510,7 @@ func extractEarningsHistory(html string, dto *ComprehensiveAnalysisDTO) error {
 	} else {
 		sectionEnd += len("</section>")
 	}
-	
+
 	match := html[sectionStart : sectionStart+sectionEnd]
 
 	// Extract currency from table header
@@ -616,7 +616,7 @@ func extractEPSTrend(html string, dto *ComprehensiveAnalysisDTO) error {
 	if sectionStart == -1 {
 		return fmt.Errorf("EPS trend section not found")
 	}
-	
+
 	// Find the end of the section (next data-testid or </section>)
 	sectionEnd := strings.Index(html[sectionStart:], "</section>")
 	if sectionEnd == -1 {
@@ -630,7 +630,7 @@ func extractEPSTrend(html string, dto *ComprehensiveAnalysisDTO) error {
 	} else {
 		sectionEnd += len("</section>")
 	}
-	
+
 	match := html[sectionStart : sectionStart+sectionEnd]
 
 	// Extract currency from table header
@@ -696,7 +696,7 @@ func extractEPSRevisions(html string, dto *ComprehensiveAnalysisDTO) error {
 	if sectionStart == -1 {
 		return fmt.Errorf("EPS revisions section not found")
 	}
-	
+
 	// Find the end of the section (next data-testid or </section>)
 	sectionEnd := strings.Index(html[sectionStart:], "</section>")
 	if sectionEnd == -1 {
@@ -710,7 +710,7 @@ func extractEPSRevisions(html string, dto *ComprehensiveAnalysisDTO) error {
 	} else {
 		sectionEnd += len("</section>")
 	}
-	
+
 	match := html[sectionStart : sectionStart+sectionEnd]
 
 	// Extract currency from table header
@@ -771,7 +771,7 @@ func extractGrowthEstimate(html string, dto *ComprehensiveAnalysisDTO) error {
 	if sectionStart == -1 {
 		return fmt.Errorf("growth estimate section not found")
 	}
-	
+
 	// Find the end of the section (next data-testid or </section>)
 	sectionEnd := strings.Index(html[sectionStart:], "</section>")
 	if sectionEnd == -1 {
@@ -785,7 +785,7 @@ func extractGrowthEstimate(html string, dto *ComprehensiveAnalysisDTO) error {
 	} else {
 		sectionEnd += len("</section>")
 	}
-	
+
 	match := html[sectionStart : sectionStart+sectionEnd]
 
 	// Extract table rows - we only want the first row (ticker data, not S&P 500)

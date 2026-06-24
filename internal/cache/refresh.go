@@ -19,10 +19,10 @@ var RefreshMap = map[string]string{
 	"eps-revisions": "quarterly", "earnings-estimates": "quarterly", "revenue-estimates": "quarterly",
 	"growth-estimates": "quarterly", "price-targets": "quarterly", "sec-filings": "quarterly",
 	"sustainability": "quarterly",
-	"isin": "annually", "options": "annually",
+	"isin":           "annually", "options": "annually",
 }
 
-func quarter(m time.Month) int { return (int(m) - 1) / 3 + 1 }
+func quarter(m time.Month) int { return (int(m)-1)/3 + 1 }
 
 // ShouldSkip returns true if a fresh enough cached file exists for (command, ticker)
 // under rawDir, per the command's refresh tier. force=true bypasses cache.

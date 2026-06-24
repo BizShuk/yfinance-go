@@ -22,17 +22,17 @@ type InsiderTransaction struct {
 }
 
 type NetSharePurchaseActivity struct {
-	Period                    string   `json:"period"`
-	BuyInfoShares             RawInt   `json:"buyInfoShares"`
-	SellInfoShares            RawInt   `json:"sellInfoShares"`
-	NetInfoShares             RawInt   `json:"netInfoShares"`
-	TotalInsiderShares        RawInt   `json:"totalInsiderShares"`
-	NetPercentInsiderShares   RawValue `json:"netPercentInsiderShares"`
-	BuyPercentInsiderShares   RawValue `json:"buyPercentInsiderShares"`
-	SellPercentInsiderShares  RawValue `json:"sellPercentInsiderShares"`
-	BuyInfoCount              RawInt   `json:"buyInfoCount"`
-	SellInfoCount             RawInt   `json:"sellInfoCount"`
-	NetInfoCount              RawInt   `json:"netInfoCount"`
+	Period                   string   `json:"period"`
+	BuyInfoShares            RawInt   `json:"buyInfoShares"`
+	SellInfoShares           RawInt   `json:"sellInfoShares"`
+	NetInfoShares            RawInt   `json:"netInfoShares"`
+	TotalInsiderShares       RawInt   `json:"totalInsiderShares"`
+	NetPercentInsiderShares  RawValue `json:"netPercentInsiderShares"`
+	BuyPercentInsiderShares  RawValue `json:"buyPercentInsiderShares"`
+	SellPercentInsiderShares RawValue `json:"sellPercentInsiderShares"`
+	BuyInfoCount             RawInt   `json:"buyInfoCount"`
+	SellInfoCount            RawInt   `json:"sellInfoCount"`
+	NetInfoCount             RawInt   `json:"netInfoCount"`
 }
 
 // InsiderPurchaseTable is one row in the yfinance-style label/value table.

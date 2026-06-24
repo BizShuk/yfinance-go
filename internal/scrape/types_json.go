@@ -151,43 +151,6 @@ type ProfileDTO struct {
 
 // Numeric coercion functions
 
-// NumToScaled converts a YahooNum to a Scaled value with the given scale
-func NumToScaled(n YahooNum, scale int) (Scaled, bool) {
-	if n.Raw == nil {
-		return Scaled{}, false
-	}
-
-	// Convert to scaled integer
-	multiplier := int64(1)
-	for i := 0; i < scale; i++ {
-		multiplier *= 10
-	}
-
-	scaled := int64(*n.Raw * float64(multiplier))
-	return Scaled{Scaled: scaled, Scale: scale}, true
-}
-
-// IntToScaled converts a YahooInt to a Scaled value with the given scale
-func IntToScaled(i YahooInt, scale int) (Scaled, bool) {
-	if i.Raw == nil {
-		return Scaled{}, false
-	}
-
-	// For integers, we typically use scale 0 unless it's a percentage
-	actualScale := scale
-	if scale == 0 {
-		actualScale = 0
-	}
-
-	multiplier := int64(1)
-	for j := 0; j < actualScale; j++ {
-		multiplier *= 10
-	}
-
-	scaled := *i.Raw * multiplier
-	return Scaled{Scaled: scaled, Scale: actualScale}, true
-}
-
 // CoerceCurrency extracts currency from various Yahoo formats
 func CoerceCurrency(v any) (Currency, bool) {
 	switch val := v.(type) {

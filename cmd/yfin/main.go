@@ -1066,20 +1066,20 @@ func createClient() (*yfinance.Client, error) {
 
 	// Create httpx config from our config
 	httpxConfig := &httpx.Config{
-		BaseURL:               httpConfig.BaseURL,
-		Timeout:               httpConfig.Timeout,
-		IdleTimeout:           httpConfig.IdleTimeout,
-		MaxConnsPerHost:       httpConfig.MaxConnsPerHost,
-		UserAgent:             httpConfig.UserAgent,
-		MaxAttempts:           httpConfig.MaxAttempts,
-		BackoffBaseMs:         httpConfig.BackoffBaseMs,
-		BackoffJitterMs:       httpConfig.BackoffJitterMs,
-		MaxDelayMs:            httpConfig.MaxDelayMs,
-		QPS:                   httpConfig.QPS,
-		Burst:                 httpConfig.Burst,
-		CircuitWindow:         httpConfig.CircuitWindow,
-		FailureThreshold:      int(httpConfig.FailureThreshold * 100), // Convert to percentage
-		ResetTimeout:          httpConfig.ResetTimeout,
+		BaseURL:          httpConfig.BaseURL,
+		Timeout:          httpConfig.Timeout,
+		IdleTimeout:      httpConfig.IdleTimeout,
+		MaxConnsPerHost:  httpConfig.MaxConnsPerHost,
+		UserAgent:        httpConfig.UserAgent,
+		MaxAttempts:      httpConfig.MaxAttempts,
+		BackoffBaseMs:    httpConfig.BackoffBaseMs,
+		BackoffJitterMs:  httpConfig.BackoffJitterMs,
+		MaxDelayMs:       httpConfig.MaxDelayMs,
+		QPS:              httpConfig.QPS,
+		Burst:            httpConfig.Burst,
+		CircuitWindow:    httpConfig.CircuitWindow,
+		FailureThreshold: int(httpConfig.FailureThreshold * 100), // Convert to percentage
+		ResetTimeout:     httpConfig.ResetTimeout,
 	}
 
 	// Create client
@@ -1970,125 +1970,6 @@ func printAnalystInsightsSummary(dto *scrape.AnalystInsightsDTO) {
 			fmt.Printf("  Downside Risk: %.1f%%\n", upside)
 		}
 	}
-}
-
-// printKeyStatisticsSummary prints a summary of key statistics
-func printKeyStatisticsSummary(dto *scrape.KeyStatisticsDTO) {
-	fmt.Printf("KEY STATISTICS: ok fields={")
-	fields := []string{}
-
-	if dto.MarketCap != nil {
-		fields = append(fields, "market_cap")
-	}
-	if dto.EnterpriseValue != nil {
-		fields = append(fields, "enterprise_value")
-	}
-	if dto.ForwardPE != nil {
-		fields = append(fields, "forward_pe")
-	}
-	if dto.TrailingPE != nil {
-		fields = append(fields, "trailing_pe")
-	}
-	if dto.SharesOutstanding != nil {
-		fields = append(fields, "shares_outstanding")
-	}
-	if dto.Beta != nil {
-		fields = append(fields, "beta")
-	}
-
-	fmt.Printf("%s} currency=%s", strings.Join(fields, ","), dto.Currency)
-
-	// Show some key numeric values (redacted format)
-	if dto.MarketCap != nil {
-		// Calculate the actual value correctly
-		multiplier := float64(1)
-		for i := 0; i < dto.MarketCap.Scale; i++ {
-			multiplier *= 10
-		}
-		actualValue := float64(dto.MarketCap.Scaled) / multiplier
-		fmt.Printf(" market_cap=~%.1fB", actualValue/1e9)
-	}
-	if dto.ForwardPE != nil {
-		// Calculate the actual value correctly
-		multiplier := float64(1)
-		for i := 0; i < dto.ForwardPE.Scale; i++ {
-			multiplier *= 10
-		}
-		actualValue := float64(dto.ForwardPE.Scaled) / multiplier
-		fmt.Printf(" forward_pe=%.2f", actualValue)
-	}
-	if dto.SharesOutstanding != nil {
-		fmt.Printf(" shares=%.1fB", float64(*dto.SharesOutstanding)/1e9)
-	}
-	fmt.Printf("\n")
-}
-
-// printFinancialsSummary prints a summary of financials
-func printFinancialsSummary(dto *scrape.FinancialsDTO) {
-	// Group lines by year
-	years := make(map[int]int)
-	for _, line := range dto.Lines {
-		years[line.PeriodEnd.Year()]++
-	}
-
-	yearList := make([]int, 0, len(years))
-	for year := range years {
-		yearList = append(yearList, year)
-	}
-	sort.Ints(yearList)
-
-	// Get currency from first line or default to USD
-	currency := "USD"
-	if len(dto.Lines) > 0 {
-		currency = dto.Lines[0].Currency
-	}
-	fmt.Printf("FINANCIALS: lines=%d currency=%s", len(dto.Lines), currency)
-
-	if len(yearList) > 0 {
-		fmt.Printf(" periods=[%d..%d]", yearList[0], yearList[len(yearList)-1])
-	}
-
-	// Show some key financial metrics (redacted format)
-	var revenue, netIncome *scrape.Scaled
-	for _, line := range dto.Lines {
-		if line.Key == "total_revenue" && revenue == nil {
-			revenue = &line.Value
-		}
-		if line.Key == "net_income" && netIncome == nil {
-			netIncome = &line.Value
-		}
-	}
-
-	if revenue != nil {
-		// Calculate the actual value correctly
-		multiplier := float64(1)
-		for i := 0; i < revenue.Scale; i++ {
-			multiplier *= 10
-		}
-		actualValue := float64(revenue.Scaled) / multiplier
-		fmt.Printf(" revenue=~%.1fB", actualValue/1e9)
-	}
-	if netIncome != nil {
-		// Calculate the actual value correctly
-		multiplier := float64(1)
-		for i := 0; i < netIncome.Scale; i++ {
-			multiplier *= 10
-		}
-		actualValue := float64(netIncome.Scaled) / multiplier
-		fmt.Printf(" net_income=~%.1fB", actualValue/1e9)
-	}
-	fmt.Printf("\n")
-}
-
-// printProfileSummary prints a summary of profile
-func printProfileSummary(dto *scrape.ProfileDTO) {
-	employees := "unknown"
-	if dto.Employees != nil {
-		employees = fmt.Sprintf("~%d", *dto.Employees)
-	}
-
-	fmt.Printf("PROFILE: officers=%d employees=%s industry=\"%s\" sector=\"%s\"\n",
-		len(dto.Officers), employees, dto.Industry, dto.Sector)
 }
 
 // buildScrapeURL builds the URL for a given ticker and endpoint
@@ -2985,64 +2866,6 @@ func runScrapePreviewProto(ctx context.Context, client scrape.Client, ticker, en
 	}
 
 	return nil
-}
-
-// convertToFinancialsDTO converts ComprehensiveFinancialsDTO to simple FinancialsDTO
-func convertToFinancialsDTO(comprehensive *scrape.ComprehensiveFinancialsDTO) *scrape.FinancialsDTO {
-	dto := &scrape.FinancialsDTO{
-		Symbol: comprehensive.Symbol,
-		Market: comprehensive.Market,
-		AsOf:   comprehensive.AsOf,
-		Lines:  []scrape.PeriodLine{},
-	}
-
-	// Use a recent quarter for period (approximate)
-	now := comprehensive.AsOf
-	quarterStart := time.Date(now.Year(), ((now.Month()-1)/3)*3+1, 1, 0, 0, 0, 0, time.UTC)
-	quarterEnd := quarterStart.AddDate(0, 3, -1)
-
-	// Convert current values to period lines
-	if comprehensive.Current.TotalRevenue != nil {
-		dto.Lines = append(dto.Lines, scrape.PeriodLine{
-			PeriodStart: quarterStart,
-			PeriodEnd:   quarterEnd,
-			Key:         "total_revenue",
-			Value:       *comprehensive.Current.TotalRevenue,
-			Currency:    scrape.Currency(comprehensive.Currency),
-		})
-	}
-
-	if comprehensive.Current.OperatingIncome != nil {
-		dto.Lines = append(dto.Lines, scrape.PeriodLine{
-			PeriodStart: quarterStart,
-			PeriodEnd:   quarterEnd,
-			Key:         "operating_income",
-			Value:       *comprehensive.Current.OperatingIncome,
-			Currency:    scrape.Currency(comprehensive.Currency),
-		})
-	}
-
-	if comprehensive.Current.NetIncomeCommonStockholders != nil {
-		dto.Lines = append(dto.Lines, scrape.PeriodLine{
-			PeriodStart: quarterStart,
-			PeriodEnd:   quarterEnd,
-			Key:         "net_income",
-			Value:       *comprehensive.Current.NetIncomeCommonStockholders,
-			Currency:    scrape.Currency(comprehensive.Currency),
-		})
-	}
-
-	if comprehensive.Current.BasicEPS != nil {
-		dto.Lines = append(dto.Lines, scrape.PeriodLine{
-			PeriodStart: quarterStart,
-			PeriodEnd:   quarterEnd,
-			Key:         "eps_basic",
-			Value:       *comprehensive.Current.BasicEPS,
-			Currency:    scrape.Currency(comprehensive.Currency),
-		})
-	}
-
-	return dto
 }
 
 // printFundamentalsSnapshot prints a summary of fundamentals snapshot

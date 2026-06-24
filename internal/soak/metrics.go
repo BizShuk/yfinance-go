@@ -3,7 +3,6 @@
 package soak
 
 import (
-	"sync"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -35,8 +34,6 @@ type Metrics struct {
 
 	// Worker metrics
 	WorkerUtilization *prometheus.GaugeVec
-
-	mu sync.RWMutex
 }
 
 // NewMetrics creates a new metrics instance

@@ -40,7 +40,6 @@ type FailureStats struct {
 	FailuresSent    int64
 	ScenarioStats   map[string]int64
 	LastFailureTime time.Time
-	mu              sync.RWMutex
 }
 
 // NewFailureServer creates a new failure injection server
